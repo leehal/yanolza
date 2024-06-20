@@ -19,7 +19,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uno;
     @Column(unique = true,nullable = false)
-    private String id;
+    private String mid;
     @Column(unique = true,nullable = false)
     private String nickname;
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class Member {
     @Builder
     public Member(String nickname, String id, String pwd, String email, String image, Authority authority) {
         this.nickname = nickname;
-        this.id = id;
+        this.mid = id;
         this.pwd = pwd;
         this.email = email;
         this.image = image;
