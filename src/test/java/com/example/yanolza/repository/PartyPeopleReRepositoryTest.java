@@ -30,6 +30,8 @@ class PartyPeopleReRepositoryTest {
     PartyRepository partyRepository;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    CalendarRepository calendarRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -38,7 +40,7 @@ class PartyPeopleReRepositoryTest {
     public Member createMember(){
 
     Member member = Member.builder()
-            .nickname("pp")
+            .nick("pp")
             .id("pkmm")
             .email("pkmm@naver")
             .pwd("1234")
@@ -59,11 +61,13 @@ class PartyPeopleReRepositoryTest {
     }
 
 
+
+
     @Test
     @DisplayName("모임 생성 Test")
     public void createTestParty(){
         Member member = createMember();
-        log.info(member.getNickname());
+        log.info(member.getNick());
 
         Party party = createParty();
         log.info(party.getPname());
@@ -85,7 +89,7 @@ class PartyPeopleReRepositoryTest {
     @DisplayName("닉네임으로 해당 사람 정보 가져오기")
     public void nickMember(){
         Member member = createMember();
-        Optional<Member> member1 = memberRepository.findByNickname(member.getNickname());
+        Optional<Member> member1 = memberRepository.findByNick(member.getNick());
         if(member1.isPresent()){
             log.info("성공 : "+member1.get().getEmail());
         }else {
@@ -104,5 +108,9 @@ class PartyPeopleReRepositoryTest {
             log.info("실패");
         }
     }
+
+//    @Test
+//    @DisplayName("캘린더 생성")
+//    public
 
 }

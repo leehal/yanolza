@@ -40,7 +40,7 @@ public class PartyService {
         Optional<Party> partyPname = partyRepository.findByPname(pname);
         if (partyPname.isPresent()){
             for (String s : nickName) {
-                Optional<Member> member = memberRepository.findByNickname(s);
+                Optional<Member> member = memberRepository.findByNick(s);
                 if (member.isPresent()) {
                     partyPeopleReRepository.save(
                             PartyPeople.builder()

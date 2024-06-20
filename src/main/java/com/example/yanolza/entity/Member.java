@@ -21,7 +21,7 @@ public class Member {
     @Column(unique = true,nullable = false)
     private String mid;
     @Column(unique = true,nullable = false)
-    private String nickname;
+    private String nick;
     @Column(nullable = false)
     private String pwd;
     @Column(unique = true,nullable = false)
@@ -34,8 +34,8 @@ public class Member {
 //    public Member()
 
     @Builder
-    public Member(String nickname, String id, String pwd, String email, String image, Authority authority) {
-        this.nickname = nickname;
+    public Member(String nick, String id, String pwd, String email, String image, Authority authority) {
+        this.nick = nick;
         this.mid = id;
         this.pwd = pwd;
         this.email = email;
