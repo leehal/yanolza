@@ -21,26 +21,26 @@ public class Member {
     @Column(unique = true,nullable = false)
     private String mid;
     @Column(unique = true,nullable = false)
-    private String nickname;
+    private String nick;
     @Column(nullable = false)
     private String pwd;
     @Column(unique = true,nullable = false)
     private String email;
     private String image;
-    private LocalDateTime regDate;
     @Enumerated(EnumType.STRING)
     private Authority authority;
-
-//    public Member()
+    @Column(name="refresh_token")
+    private String refreshToken;
+    @Column(name="refresh_token_exp")
+    private Long refreshTokenExpiresIn;
 
     @Builder
-    public Member(String nickname, String id, String pwd, String email, String image, Authority authority) {
-        this.nickname = nickname;
-        this.mid = id;
+    public Member(String nick, String mid, String pwd, String email, String image, Authority authority) {
+        this.nick = nick;
+        this.mid = mid;
         this.pwd = pwd;
         this.email = email;
         this.image = image;
         this.authority = authority;
-        this.regDate = LocalDateTime.now();
     }
 }
