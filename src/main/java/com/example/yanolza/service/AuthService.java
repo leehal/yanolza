@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
@@ -26,7 +27,6 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Transactional
 public class AuthService {
-
 //    private final JavaMailSender mailSender;
     private final AuthenticationManagerBuilder managerBuilder;
     private final MemberRepository memberRepository;
@@ -41,17 +41,14 @@ public class AuthService {
             default: return res;
         }
     }
-    public Boolean conId(String id) {
-        return memberRepository.existsByMid(id);
-    }
-
-    public Boolean conEmail(String email) {
-        return memberRepository.existsByEmail(email);
-    }
-    public Boolean conNick(String nick) {
-        return memberRepository.existsByNick(nick);
-    }
-
+    public String findInfo(String email){
+            Optional<Member> member = memberRepository.findByEmail(email);
+            if(member.isPresent()){
+                Member mem = member.get();
+                return mem.getMid();
+            }
+            else return null;
+        }
 
 //    public String certEmail(String email) {
 //

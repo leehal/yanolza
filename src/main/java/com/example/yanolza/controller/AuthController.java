@@ -4,6 +4,7 @@ import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.TokenDto;
 import com.example.yanolza.service.AuthService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,19 +37,10 @@ public class AuthController {
         int type = Integer.parseInt(data.get("type"));
         return ResponseEntity.ok(authService.existInfo(info,type));
     }
-    @GetMapping("/existid")
-    public ResponseEntity<Boolean> conId(@RequestParam String id) {
-        return ResponseEntity.ok(authService.conId(id));
-    }
 
-    @GetMapping("/existemail")
-    public ResponseEntity<Boolean> conEmail(@RequestParam String email) {
-        return ResponseEntity.ok(authService.conEmail(email));
-    }
-
-    @GetMapping("/existnick")
-    public ResponseEntity<Boolean> conNick(@RequestParam String nick) {
-        return ResponseEntity.ok(authService.conNick(nick));
+    @GetMapping("/findinfo")
+    public ResponseEntity<String> findInfo(@RequestParam String email){
+        return ResponseEntity.ok(authService.findInfo(email));
     }
 
 //    @GetMapping("/certemail")
