@@ -89,10 +89,10 @@ public class AuthService {
         Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
 
         TokenDto token = tokenProvider.generateTokenDto(authentication);
+       log.info(String.valueOf(token));
 
-        Member member = new Member();
+        Member member = memberRepository.findByMid(requestDto.getMid()).get();
         String encodedToken = token.getRefreshToken();
-        member.setMid(requestDto.getMid());
         member.setRefreshToken(encodedToken.concat("="));
         member.setRefreshTokenExpiresIn(token.getRefreshTokenExpiresIn());
 

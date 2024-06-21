@@ -27,7 +27,6 @@ public class Member {
     @Column(unique = true,nullable = false)
     private String email;
     private String image;
-    private LocalDateTime regDate;
     @Enumerated(EnumType.STRING)
     private Authority authority;
     @Column(name="refresh_token")
@@ -43,6 +42,5 @@ public class Member {
         this.email = email;
         this.image = image;
         this.authority = authority;
-        this.regDate = LocalDateTime.now();
     }
 }

@@ -16,18 +16,18 @@ import java.time.LocalDateTime;
 public class MemberReqDto {
     private String email;
     private String mid;
-    private String password;
+    private String pwd;
     private String nick;
     public Member toEntity(PasswordEncoder passwordEncoder){
         return Member.builder()
                 .email(email)
                 .mid(mid)
-                .pwd(passwordEncoder.encode(password))
+                .pwd(passwordEncoder.encode(pwd))
                 .nick(nick)
                 .authority(Authority.ROLL_USER)
                 .build();
     }
     public UsernamePasswordAuthenticationToken toAuthentication() {
-        return new UsernamePasswordAuthenticationToken(mid,password);
+        return new UsernamePasswordAuthenticationToken(mid,pwd);
     }
 }

@@ -23,7 +23,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody MemberReqDto requestDto) {
-        return ResponseEntity.ok(authService.login(requestDto));
+        TokenDto tokenDto = authService.login(requestDto);
+        System.out.println("token : "+tokenDto);
+        return ResponseEntity.ok(tokenDto);
     }
 
     @GetMapping("/existid")
