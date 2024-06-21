@@ -15,6 +15,6 @@ public class PartyResponseDto {
 //    private LocalDateTime pdate;
     private List<String> nick;
 
-//    public static PartyResponseDto of (Par)
+//    public static PartyResponseDto of (Party)
 
 }

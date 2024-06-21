@@ -29,6 +29,6 @@ public class Calendar {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pno")
     private Party calenderPno;
-    private String color;
+//    private String color;
     private String caddr;
 }

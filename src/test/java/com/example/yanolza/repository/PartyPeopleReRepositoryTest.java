@@ -24,7 +24,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@Transactional
+@Transactional
 @Slf4j
 @TestPropertySource(locations = "classpath:application-test.properties")
 class PartyPeopleReRepositoryTest {
@@ -131,7 +131,6 @@ class PartyPeopleReRepositoryTest {
                                 .calenderPno(party.get())
                                 .caContent("기차시간 7시")
                                 .calenderNick(member.get())
-                                .color("black")
                                 .caDate(dateTime)
                                 .build()
                 );
@@ -152,7 +151,7 @@ class PartyPeopleReRepositoryTest {
             List<Calendar> calendar = calendarRepository.findByCaDateAndCalenderPno(dateTime, party.get());
             if (!calendar.isEmpty()) {
                 for (Calendar c : calendar) {
-                    log.info("캘린더 : " + c.getColor());
+                    log.info("캘린더 : " + c.getCalenderNick());
                 }
             } else {
                 log.info("실패");
@@ -163,7 +162,6 @@ class PartyPeopleReRepositoryTest {
 
     @Test
     @DisplayName("나의 모임과 캘린더 조회")
-    @Transactional
     public void selectMyParty() {
         createCalendar();
         Optional<Member> member = memberRepository.findByNick("pp");
@@ -182,6 +180,19 @@ class PartyPeopleReRepositoryTest {
                 }
             }else {
                 log.info("실패");
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Pno로 파티 멤버 조회")
+    public void selectPartyMember(){
+        createTestParty();
+        Optional<Party> party = partyRepository.findByPname("강릉여행");
+        if (party.isPresent()) {
+            List<PartyPeople> partyPeopleList = partyPeopleReRepository.findByPartyPeoplePno(party.get());
+            for (PartyPeople p : partyPeopleList) {
+                log.info("성공 : "+p.getPartyPeopleNick());
             }
         }
     }
