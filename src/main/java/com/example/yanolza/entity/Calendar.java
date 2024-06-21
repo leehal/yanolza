@@ -14,20 +14,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-
 public class Calendar {
     @Id
     @Column(name = "cano")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long cano;
     @Column(nullable = false)
-    private LocalDateTime cadate;
+    private LocalDateTime caDate;
     @Column(nullable = false)
-    private String cacontent;
+    private String caContent;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nick")
     private Member calenderNick;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pno")
     private Party calenderPno;
+    private String color;
+    private String caddr;
 }
