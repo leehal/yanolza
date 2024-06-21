@@ -19,14 +19,15 @@ import static com.example.yanolza.security.SecurityUtil.getCurrentMemberId;
 public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
-
     public Member memberIdFindMember(){
-        Long id = getCurrentMemberId();
+        String id = getCurrentMemberId();
+        log.info(String.valueOf(id));
         Member mem = new Member();
-        Optional<Member> member = memberRepository.findById(id);
+        Optional<Member> member = memberRepository.findByMid(id);
         if(member.isPresent()){
             mem = member.get();
         }
         return mem;
     }
+
 }

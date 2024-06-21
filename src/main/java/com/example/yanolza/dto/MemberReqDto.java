@@ -18,6 +18,7 @@ public class MemberReqDto {
     private String mid;
     private String pwd;
     private String nick;
+
     public Member toEntity(PasswordEncoder passwordEncoder){
         return Member.builder()
                 .email(email)

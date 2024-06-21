@@ -15,6 +15,7 @@ public class MemberResDto {
     private String email;
     private String mid;
     private String image;
+    
     public static MemberResDto of (Member member){
         return MemberResDto.builder()
                 .mid(member.getMid())

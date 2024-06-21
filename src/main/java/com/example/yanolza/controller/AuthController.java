@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/auth")
@@ -28,6 +30,12 @@ public class AuthController {
         return ResponseEntity.ok(tokenDto);
     }
 
+    @PostMapping("/existinfo")
+    public ResponseEntity<Boolean> existMember(@RequestBody Map<String,String > data){
+        String info = data.get("info");
+        int type = Integer.parseInt(data.get("type"));
+        return ResponseEntity.ok(authService.existInfo(info,type));
+    }
     @GetMapping("/existid")
     public ResponseEntity<Boolean> conId(@RequestParam String id) {
         return ResponseEntity.ok(authService.conId(id));

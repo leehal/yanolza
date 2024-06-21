@@ -32,7 +32,15 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-
+    public Boolean existInfo(String info, int type){
+        Boolean res = true;
+        switch (type){
+            case 1: return memberRepository.existsByMid(info);
+            case 2:  return memberRepository.existsByEmail(info);
+            case 3: return memberRepository.existsByNick(info);
+            default: return res;
+        }
+    }
     public Boolean conId(String id) {
         return memberRepository.existsByMid(id);
     }
