@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -80,12 +80,12 @@ class PartyPeopleReRepositoryTest {
         if (partypno.isPresent()) {
 
             PartyPeople partyPeople = PartyPeople.builder()
-                    .partyPeaplenick(member)
-                    .partyPeaplePno(partypno.get())
+                    .partyPeopleNick(member)
+                    .partyPeoplePno(partypno.get())
                     .build();
 
             partyPeopleReRepository.save(partyPeople);
-            log.info("결과는 : " + partyPeople.getPartyPeaplenick());
+            log.info("결과는 : " + partyPeople.getPartyPeopleNick());
         }
 
     }
@@ -94,7 +94,7 @@ class PartyPeopleReRepositoryTest {
     @DisplayName("닉네임으로 해당 사람 정보 가져오기")
     public void nickMember() {
         Member member = createMember();
-        Optional<Member> member1 = memberRepository.findByNick(member.getNick());
+        Optional<Member> member1 = memberRepository.findByNick("pp");
         if (member1.isPresent()) {
             log.info("성공 : " + member1.get().getEmail());
         } else {
@@ -161,5 +161,29 @@ class PartyPeopleReRepositoryTest {
         }
     }
 
+    @Test
+    @DisplayName("나의 모임과 캘린더 조회")
+    @Transactional
+    public void selectMyParty() {
+        createCalendar();
+        Optional<Member> member = memberRepository.findByNick("pp");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime dateTime = LocalDate.parse("2024-06-20", formatter).atStartOfDay();
+
+        if (member.isPresent()) {
+            Member memNick = member.get();
+            List<PartyPeople> partyPeopleList = partyPeopleReRepository.findByPartyPeopleNick(memNick);
+            if (!partyPeopleList.isEmpty()){
+                for (PartyPeople p : partyPeopleList) {
+                    List<Calendar> calendars = calendarRepository.findByCaDateAndCalenderPno(dateTime,p.getPartyPeoplePno());
+                    for (Calendar c : calendars) {
+                        log.info("결과 : "+c.getCaContent());
+                    }
+                }
+            }else {
+                log.info("실패");
+            }
+        }
+    }
 
 }

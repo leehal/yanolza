@@ -20,8 +20,9 @@ public class PartyPeople {
     private Long ppno;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pno")
-    private Party partyPeaplePno;
+    private Party partyPeoplePno;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nick")
-    private Member partyPeaplenick;
+    private Member partyPeopleNick;
+
 }
