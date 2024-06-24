@@ -2,6 +2,7 @@ package com.example.yanolza.dto;
 
 import com.example.yanolza.constant.Authority;
 import com.example.yanolza.entity.Member;
+import com.example.yanolza.entity.Social;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,13 @@ public class MemberReqDto {
                 .build();
     }
     public UsernamePasswordAuthenticationToken toAuthentication() {
-        return new UsernamePasswordAuthenticationToken(mid,pwd);
+        return new UsernamePasswordAuthenticationToken(mid,pwd!=null?pwd:null);
+    }
+
+    public static MemberReqDto of(Social social){
+        return MemberReqDto.builder()
+                .mid(social.getMid())
+                .pwd("social")
+                .build();
     }
 }

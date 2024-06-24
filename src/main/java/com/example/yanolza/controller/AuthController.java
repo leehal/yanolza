@@ -3,7 +3,9 @@ package com.example.yanolza.controller;
 import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.TokenDto;
+import com.example.yanolza.entity.Social;
 import com.example.yanolza.service.AuthService;
+import com.example.yanolza.service.SocialService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final SocialService socialService;
 
     @PostMapping("/signup")
     public ResponseEntity<MemberResDto> signup(@RequestBody MemberReqDto requestDto) {
@@ -52,5 +55,12 @@ public class AuthController {
     public ResponseEntity<TokenDto> newToken(@RequestBody String refreshToken) {
         log.info("refreshToken: {}", refreshToken);
         return ResponseEntity.ok(authService.refreshAccessToken(refreshToken));
+    }
+    @GetMapping("/social")
+    public ResponseEntity<TokenDto> social(@RequestParam String token) {
+        Social social = socialService.kakaoUserInfo(token);
+        TokenDto tokenDto = authService.login(MemberReqDto.of(social));
+        System.out.println("token : "+tokenDto);
+        return ResponseEntity.ok(tokenDto);
     }
 }
