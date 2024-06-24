@@ -1,6 +1,7 @@
 package com.example.yanolza.service;
 
 import com.example.yanolza.dto.CalendarDto;
+import com.example.yanolza.dto.PartyNameListDto;
 import com.example.yanolza.dto.PartyRequestDto;
 import com.example.yanolza.entity.Calendar;
 import com.example.yanolza.entity.Member;
@@ -33,6 +34,7 @@ public class PartyService {
     private final MemberService memberService;
     private final CalendarRepository calendarRepository;
 
+    //    party save
     public boolean partyInsert(PartyRequestDto reqDto) {
         boolean isTrue = false;
         List<String> nickName = reqDto.getNick();
@@ -63,46 +65,79 @@ public class PartyService {
         return isTrue;
     }
 
-//    내 모임 파티명 리스트 리턴
-    public List<String > partyView(String nick) {
+    //    내 모임 파티명, pno 리스트 리턴
+    public List<PartyNameListDto> partyView() {
         Member member = memberService.memberIdFindMember();
-        List<String > list = new ArrayList<>();
+        List<PartyNameListDto> list = new ArrayList<>();
 //         유저가 참가한 모임 리스트 나오기
         List<PartyPeople> pnoList = partyPeopleReRepository.findByPartyPeopleNick(member);
         for (PartyPeople pno : pnoList) {
 //            모임의 pno에 따른 pname을 list에 추가
             Optional<Party> pnameParty = partyRepository.findById(pno.getPartyPeoplePno().getPno());
-            if (pnameParty.isPresent()){
-                String pname = pnameParty.get().getPname();
-                list.add(pname);
-            }
-        }
-        return list;
-    }
-
-//    파티명에 따른 멤버 리스트 조회
-    public List<String > partyMemberList(Long pno){
-        List<String > list = new ArrayList<>();
-        Optional<Party> party = partyRepository.findById(pno);
-        if (party.isPresent()){
-            list.add(party.get().getPname());
-        }
-        return list;
-    }
-
-//    String으로 날짜와 Party 타입으로 pno 받아서 하루 일정 모두 보여주기
-    public List<CalendarDto> partyCalendarOneDay(Party pno, String date){
-        List<CalendarDto> list = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime dateTime = LocalDate.parse(date, formatter).atStartOfDay();
-
-        List<Calendar> calendar = calendarRepository.findByCaDateAndCalenderPno(dateTime, pno);
-        if (!calendar.isEmpty()) {
-            for (Calendar c : calendar) {
-                CalendarDto dto = CalendarDto.of(c);
+            if (pnameParty.isPresent()) {
+                PartyNameListDto dto = new PartyNameListDto();
+                dto.setPname(pnameParty.get().getPname());
+                dto.setPno(pnameParty.get().getPno());
                 list.add(dto);
             }
         }
         return list;
     }
+
+    //    Pno에 따른 멤버 리스트 조회
+    public List<String> partyMemberList(Long pno) {
+        List<String> list = new ArrayList<>();
+        Optional<Party> party = partyRepository.findById(pno);
+        if (party.isPresent()) {
+            list.add(party.get().getPname());
+        }
+        return list;
+    }
+
+    //    String으로 날짜와 Party 타입으로 pno 받아서 하루 일정 모두 보여주기
+    public List<CalendarDto> partyCalendarOneDay(Long pno, String date) {
+        List<CalendarDto> list = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime dateTime = LocalDate.parse(date, formatter).atStartOfDay();
+
+        Optional<Party> partyPno = partyRepository.findById(pno);
+        if (partyPno.isPresent()) {
+            List<Calendar> calendar = calendarRepository.findByCaDateAndCalenderPno(dateTime, partyPno.get());
+            if (!calendar.isEmpty()) {
+                for (Calendar c : calendar) {
+                    CalendarDto dto = CalendarDto.of(c);
+                    list.add(dto);
+                }
+            }
+        }
+        return list;
+    }
+
+//    calendar insert
+    public boolean calendarInsert(CalendarDto calendarDto) {
+        boolean isTrue = false;
+        Optional<Party> party = partyRepository.findById(calendarDto.getCalenderPno());
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDateTime dateTime = LocalDate.parse(calendarDto.getCaDate(), formatter).atStartOfDay();
+        Optional<Member> member = memberRepository.findByNick(calendarDto.getCalenderNick());
+
+        if (party.isPresent()) {
+
+            if (member.isPresent()) {
+                Calendar calendar = calendarRepository.save(
+                        Calendar.builder()
+                                .calenderPno(party.get())
+                                .caContent(calendarDto.getCaContent())
+                                .calenderNick(member.get())
+                                .caDate(calendarDto.getCaDate())
+                                .build()
+                );
+                calendarRepository.save(calendar);
+                isTrue = true;
+            }
+        }
+        return isTrue;
+    }
+
+//    public boolean
 }

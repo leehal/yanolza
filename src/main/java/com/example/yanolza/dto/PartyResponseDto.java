@@ -11,10 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PartyResponseDto {
-    private String pname;
-//    private LocalDateTime pdate;
+    private List<CalendarDto> dto;
     private List<String> nick;
-
-//    public static PartyResponseDto of (Party)
 
 }

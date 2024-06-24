@@ -42,7 +42,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/party/**", "/auth/**", "/ws/**", "/movies/**", "/elastic/**").permitAll()
+                .antMatchers("/", "/auth/**", "/ws/**", "/movies/**", "/elastic/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/favicon.ico","/manifest.json").permitAll()
                 .and()

@@ -118,7 +118,7 @@ class PartyPeopleReRepositoryTest {
     @DisplayName("캘린더 생성")
     public void createCalendar() {
         createTestParty();
-        Optional<Party> party = partyRepository.findByPname("강릉여행");
+        Optional<Party> party = partyRepository.findByPname("강릉여행"); // pno로 받기
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime dateTime = LocalDate.parse("2024-06-20", formatter).atStartOfDay();
 
