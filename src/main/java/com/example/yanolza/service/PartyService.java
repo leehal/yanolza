@@ -124,12 +124,15 @@ public class PartyService {
         if (party.isPresent()) {
 
             if (member.isPresent()) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime dateTime = LocalDate.parse(calendarDto.getCaDate(), formatter).atStartOfDay();
+
                 Calendar calendar = calendarRepository.save(
                         Calendar.builder()
                                 .calenderPno(party.get())
                                 .caContent(calendarDto.getCaContent())
                                 .calenderNick(member.get())
-                                .caDate(calendarDto.getCaDate())
+                                .caDate(dateTime)
                                 .build()
                 );
                 calendarRepository.save(calendar);

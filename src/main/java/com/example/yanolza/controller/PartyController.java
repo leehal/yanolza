@@ -20,7 +20,7 @@ import java.util.List;
 public class PartyController {
     private final PartyService partyService;
 
-//   insert party
+//   save party
     @PostMapping("/save")
     public ResponseEntity<Boolean> createParty(@RequestBody PartyRequestDto requestDto){
         return ResponseEntity.ok(partyService.partyInsert(requestDto));
