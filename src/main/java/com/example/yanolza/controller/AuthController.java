@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -59,7 +60,7 @@ public class AuthController {
     @GetMapping("/social")
     public ResponseEntity<TokenDto> social(@RequestParam String token) {
         Social social = socialService.kakaoUserInfo(token);
-        TokenDto tokenDto = authService.login(MemberReqDto.of(social));
+        TokenDto tokenDto = authService.kakaoLogin(social);
         System.out.println("token : "+tokenDto);
         return ResponseEntity.ok(tokenDto);
     }

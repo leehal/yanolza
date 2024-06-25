@@ -1,5 +1,6 @@
 package com.example.yanolza.controller;
 
+import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ public class MyController {
     @GetMapping("/detail")
     public ResponseEntity<MemberResDto> memberDetail() {
         MemberResDto memberDto = MemberResDto.of(memberService.memberIdFindMember());
+        return ResponseEntity.ok(memberDto);
+    }
+    @GetMapping("/socialdetail")
+    public ResponseEntity<MemberReqDto> socialMemberDetail() {
+        MemberReqDto memberDto = MemberReqDto.of(memberService.memberIdFindSocial());
         return ResponseEntity.ok(memberDto);
     }
 }

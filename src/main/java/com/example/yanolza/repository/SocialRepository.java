@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SocialRepository extends JpaRepository<Social, Long> {
 
-    Optional<Social> findByMid(String mid);
+    Optional<Social> findByMid(String email);
 
 }

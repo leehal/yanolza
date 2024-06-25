@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 public class SocialService {
     private final RestTemplate restTemplate;
     private  final SocialRepository socialRepository;
+
     public Social kakaoUserInfo(String kakaoToken) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -35,11 +37,10 @@ public class SocialService {
                     KakaoDto.class
             );
             KakaoDto kakaoDto = responseEntity.getBody();
-            String kakaoId = kakaoDto.getId();
-            if(socialRepository.findByMid(kakaoId).isEmpty()){
-                saveSocialEntity(kakaoDto);
-            }
-            return socialRepository.findByMid(kakaoId).get();
+            String mid = kakaoDto.getKakaoAccount().getEmail();
+            if(!socialRepository.findByMid(mid).isPresent())
+            {saveSocialEntity(kakaoDto);}
+            return socialRepository.findByMid(mid).get();
         }catch(Exception e) {
             log.error("카카오 가입 시도 중 오류 발생(카카오 서비스)");
             return null;

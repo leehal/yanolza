@@ -1,17 +1,22 @@
 package com.example.yanolza.service;
 
+import com.example.yanolza.dto.KakaoDto;
 import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.TokenDto;
 import com.example.yanolza.entity.Member;
+import com.example.yanolza.entity.Social;
 import com.example.yanolza.jwt.TokenProvider;
 import com.example.yanolza.repository.MemberRepository;
+import com.example.yanolza.repository.SocialRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.MessagingException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +24,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -30,6 +34,7 @@ public class AuthService {
 //    private final JavaMailSender mailSender;
     private final AuthenticationManagerBuilder managerBuilder;
     private final MemberRepository memberRepository;
+    private final SocialRepository socialRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     public Boolean existInfo(String info, int type){
@@ -94,7 +99,7 @@ public class AuthService {
         Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
 
         TokenDto token = tokenProvider.generateTokenDto(authentication);
-       log.info(String.valueOf(token));
+        log.info(String.valueOf(token));
 
         Member member = memberRepository.findByMid(requestDto.getMid()).get();
         String encodedToken = token.getRefreshToken();
@@ -102,15 +107,43 @@ public class AuthService {
         member.setRefreshTokenExpiresIn(token.getRefreshTokenExpiresIn());
 
         memberRepository.save(member);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            log.info("현재 인증 정보: " + auth);
 
         return token;
 
-    } catch (Exception e) {
-        log.error("로그인 중 에러 발생 : ", e);
-        throw new RuntimeException("로그인 중 에러 발생", e);
+        } catch (Exception e) {
+            log.error("로그인 중 에러 발생 : ", e);
+            throw new RuntimeException("로그인 중 에러 발생", e);
+        }
     }
+    public TokenDto kakaoLogin(Social user) {
+        try{
+            List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getMid(), user.getPwd(),authorities);
+            log.info("UsernamePasswordAuthenticationToken 생성: Principal={}, Credentials=[PROTECTED], Authorities={}", authToken.getPrincipal(), authToken.getAuthorities());
 
-}
+            Authentication authentication = managerBuilder.getObject().authenticate(authToken);
+            log.info("인증 완료: Principal={}, Authorities={}", authentication.getPrincipal(), authentication.getAuthorities());
+
+            TokenDto token = tokenProvider.generateTokenDto(authentication);
+
+            Social social = socialRepository.findByMid(user.getMid()).get();
+            String encodedToken = token.getRefreshToken();
+            social.setRefreshToken(encodedToken.concat("="));
+            social.setRefreshTokenExpiresIn(token.getRefreshTokenExpiresIn());
+
+            socialRepository.save(social);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            log.info("현재 인증 정보: " + auth);
+
+            return token;
+
+        } catch (Exception e) {
+            log.error("로그인 중 에러 발생 : {}", e.getMessage(), e);
+            throw new RuntimeException("로그인 중 에러 발생: " + e.getMessage(), e);
+        }
+    }
 
     public TokenDto refreshAccessToken(String refreshToken) {
         log.info("refreshToken : {}", refreshToken);

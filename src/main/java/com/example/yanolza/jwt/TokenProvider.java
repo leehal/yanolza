@@ -17,6 +17,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30 ; // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 7일
     private final Key key;
 
@@ -58,6 +59,23 @@ public class TokenProvider {
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+
+        return TokenDto.builder()
+                .grantType(BEARER_TYPE)
+                .accessToken(accessToken)
+                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .refreshToken(refreshToken)
+                .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
+                .build();
+    }
+    public TokenDto generateSocialTokenDto(Map<String,String> data) {
+        long now = System.currentTimeMillis();
+        long expiresInSeconds = Long.parseLong(data.get("expires_in").toString());
+        Date accessTokenExpiresIn = new Date(now + expiresInSeconds * 1000);
+        String accessToken = data.get("access_token");
+        long refreshExpiresInSeconds = Long.parseLong(data.get("refresh_token_expires_in").toString());
+        String refreshToken = data.get("refresh_token");
+        Date refreshTokenExpiresIn = new Date(now + refreshExpiresInSeconds * 1000);
 
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)

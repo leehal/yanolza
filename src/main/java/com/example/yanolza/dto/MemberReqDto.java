@@ -30,13 +30,13 @@ public class MemberReqDto {
                 .build();
     }
     public UsernamePasswordAuthenticationToken toAuthentication() {
-        return new UsernamePasswordAuthenticationToken(mid,pwd!=null?pwd:null);
+        return new UsernamePasswordAuthenticationToken(mid,pwd);
     }
 
     public static MemberReqDto of(Social social){
         return MemberReqDto.builder()
                 .mid(social.getMid())
-                .pwd("social")
+                .pwd(social.getPwd())
                 .build();
     }
 }
