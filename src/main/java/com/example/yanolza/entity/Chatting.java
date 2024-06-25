@@ -1,5 +1,6 @@
 package com.example.yanolza.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,14 +17,23 @@ import java.time.LocalDateTime;
 @Slf4j
 public class Chatting {
     @Id
-    @Column(name = "chno")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long chno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chat_id")
+    private Long chatId;
+
+    @Column(name = "sender")
+    private String sender;
+
+    @Column(name = "message")
+    private String message;
+
+    @Column(name = "sent_at")
+    private LocalDateTime sentAt;
+
+
+    // chat와 chatRoom간에 순환참조가 일어나는걸 막아주는 JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="crno")
-    private ChattingRoom crno;
-    @Column(nullable = false)
-    private LocalDateTime chdate;
-    @Column(nullable = false)
-    private String chcontent;
+    @JoinColumn(name = "room_id")
+    @JsonIgnore
+    private ChattingRoom chatRoom;
 }

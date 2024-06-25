@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -16,8 +17,11 @@ import javax.persistence.*;
 @Table(name = "Chatting_Room")
 
 public class ChattingRoom {
-    @Id
-    @Column(name = "crno")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long crno;
+    @Id // UUID로 String 타입 RoomID 반환
+    @Column(name="room_id")
+    private String roomId;
+    @Column(name="room_name")
+    private String roomName;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }
