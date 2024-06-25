@@ -22,9 +22,4 @@ public class MyController {
         MemberResDto memberDto = MemberResDto.of(memberService.memberIdFindMember());
         return ResponseEntity.ok(memberDto);
     }
-    @GetMapping("/socialdetail")
-    public ResponseEntity<MemberReqDto> socialMemberDetail() {
-        MemberReqDto memberDto = MemberReqDto.of(memberService.memberIdFindSocial());
-        return ResponseEntity.ok(memberDto);
-    }
 }

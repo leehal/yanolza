@@ -68,23 +68,6 @@ public class TokenProvider {
                 .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
                 .build();
     }
-    public TokenDto generateSocialTokenDto(Map<String,String> data) {
-        long now = System.currentTimeMillis();
-        long expiresInSeconds = Long.parseLong(data.get("expires_in").toString());
-        Date accessTokenExpiresIn = new Date(now + expiresInSeconds * 1000);
-        String accessToken = data.get("access_token");
-        long refreshExpiresInSeconds = Long.parseLong(data.get("refresh_token_expires_in").toString());
-        String refreshToken = data.get("refresh_token");
-        Date refreshTokenExpiresIn = new Date(now + refreshExpiresInSeconds * 1000);
-
-        return TokenDto.builder()
-                .grantType(BEARER_TYPE)
-                .accessToken(accessToken)
-                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
-                .refreshToken(refreshToken)
-                .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
-                .build();
-    }
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);

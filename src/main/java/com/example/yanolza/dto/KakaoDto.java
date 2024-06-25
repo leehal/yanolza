@@ -1,13 +1,11 @@
 package com.example.yanolza.dto;
 
-import com.example.yanolza.entity.Social;
+import com.example.yanolza.entity.Member;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -37,16 +35,14 @@ public class KakaoDto {
 
         public KakaoDto() {}
 
-        public Social toEntity() {
-            return Social.builder()
-                    .pwd(id)
+        public Member toEntity(PasswordEncoder passwordEncoder) {
+            return Member.builder()
+                    .pwd(passwordEncoder.encode(id))
                     .mid(kakaoAccount.getEmail())
                     .nick(kakaoAccount.getProfile().getNick())
-                    .profile(kakaoAccount.getProfile().getProfileImageUrl())
+                    .image(kakaoAccount.getProfile().getProfileImageUrl())
+                    .social("KAKAO")
                     .build();
         }
-    public UsernamePasswordAuthenticationToken toAuthenticationToken(List<SimpleGrantedAuthority> authorities) {
-        return new UsernamePasswordAuthenticationToken(kakaoAccount.getEmail(), "", authorities);
-    }
     }
 

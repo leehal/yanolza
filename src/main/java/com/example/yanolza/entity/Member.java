@@ -24,23 +24,22 @@ public class Member {
     private String nick;
     @Column(nullable = false)
     private String pwd;
-    @Column(unique = true,nullable = false)
+    @Column(unique = true)
     private String email;
     private String image;
-    @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private String social;
     @Column(name="refresh_token")
     private String refreshToken;
     @Column(name="refresh_token_exp")
     private Long refreshTokenExpiresIn;
 
     @Builder
-    public Member(String nick, String mid, String pwd, String email, String image, Authority authority) {
+    public Member(String nick, String mid, String pwd, String email, String image, String social) {
         this.nick = nick;
         this.mid = mid;
         this.pwd = pwd;
         this.email = email;
         this.image = image;
-        this.authority = authority;
+        this.social = social;
     }
 }

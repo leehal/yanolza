@@ -3,7 +3,7 @@ package com.example.yanolza.controller;
 import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.TokenDto;
-import com.example.yanolza.entity.Social;
+import com.example.yanolza.entity.Member;
 import com.example.yanolza.service.AuthService;
 import com.example.yanolza.service.SocialService;
 import lombok.Getter;
@@ -46,6 +46,10 @@ public class AuthController {
     public ResponseEntity<String> findInfo(@RequestParam String email){
         return ResponseEntity.ok(authService.findInfo(email));
     }
+    @PostMapping("/resetpw")
+    public ResponseEntity<Boolean> resetPw(@RequestBody MemberReqDto memberReqDto){
+        return ResponseEntity.ok(authService.resetPw(memberReqDto));
+    }
 
 //    @GetMapping("/certemail")
 //    public ResponseEntity<String> certEmail(@RequestParam String email) {
@@ -57,10 +61,10 @@ public class AuthController {
         log.info("refreshToken: {}", refreshToken);
         return ResponseEntity.ok(authService.refreshAccessToken(refreshToken));
     }
-    @GetMapping("/social")
+    @GetMapping("/kakao")
     public ResponseEntity<TokenDto> social(@RequestParam String token) {
-        Social social = socialService.kakaoUserInfo(token);
-        TokenDto tokenDto = authService.kakaoLogin(social);
+        MemberReqDto memberReqDto = socialService.kakaoUserInfo(token);
+        TokenDto tokenDto = authService.login(memberReqDto);
         System.out.println("token : "+tokenDto);
         return ResponseEntity.ok(tokenDto);
     }

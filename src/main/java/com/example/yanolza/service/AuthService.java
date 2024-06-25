@@ -1,11 +1,9 @@
 package com.example.yanolza.service;
 
-import com.example.yanolza.dto.KakaoDto;
 import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.TokenDto;
 import com.example.yanolza.entity.Member;
-import com.example.yanolza.entity.Social;
 import com.example.yanolza.jwt.TokenProvider;
 import com.example.yanolza.repository.MemberRepository;
 import com.example.yanolza.repository.SocialRepository;
@@ -117,33 +115,6 @@ public class AuthService {
             throw new RuntimeException("로그인 중 에러 발생", e);
         }
     }
-    public TokenDto kakaoLogin(Social user) {
-        try{
-            List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getMid(), user.getPwd(),authorities);
-            log.info("UsernamePasswordAuthenticationToken 생성: Principal={}, Credentials=[PROTECTED], Authorities={}", authToken.getPrincipal(), authToken.getAuthorities());
-
-            Authentication authentication = managerBuilder.getObject().authenticate(authToken);
-            log.info("인증 완료: Principal={}, Authorities={}", authentication.getPrincipal(), authentication.getAuthorities());
-
-            TokenDto token = tokenProvider.generateTokenDto(authentication);
-
-            Social social = socialRepository.findByMid(user.getMid()).get();
-            String encodedToken = token.getRefreshToken();
-            social.setRefreshToken(encodedToken.concat("="));
-            social.setRefreshTokenExpiresIn(token.getRefreshTokenExpiresIn());
-
-            socialRepository.save(social);
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            log.info("현재 인증 정보: " + auth);
-
-            return token;
-
-        } catch (Exception e) {
-            log.error("로그인 중 에러 발생 : {}", e.getMessage(), e);
-            throw new RuntimeException("로그인 중 에러 발생: " + e.getMessage(), e);
-        }
-    }
 
     public TokenDto refreshAccessToken(String refreshToken) {
         log.info("refreshToken : {}", refreshToken);
@@ -161,5 +132,14 @@ public class AuthService {
             }
         }
         return null;
+    }
+    public Boolean resetPw(MemberReqDto memberReqDto){
+        if (memberRepository.findByMid(memberReqDto.getMid()).isEmpty()) {
+            return false;
+        }
+        Member member = memberRepository.findByMid(memberReqDto.getMid()).get();
+        member.setPwd(passwordEncoder.encode(memberReqDto.getPwd()));
+        memberRepository.save(member);
+        return true;
     }
 }
