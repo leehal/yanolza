@@ -24,4 +24,21 @@ public class ChattingRoom {
     private String roomName;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+//    @Id
+//    @Column(name = "room_id", length = 50)
+//    private String roomId;
+//    @Column(name = "room_name")
+//    private String roomName;
+//
+//    @Column(name = "created_at")
+//    private LocalDateTime createdAt;
+//
+//    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonManagedReference
+//    private List<Chat> chats = new ArrayList<>();
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "owner_id")
+//    private Member owner;
 }

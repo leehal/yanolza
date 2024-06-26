@@ -18,11 +18,12 @@ import java.time.LocalDateTime;
 public class Chatting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
-    private Long chatId;
+    @Column(name = "chno")
+    private Long chno;
 
-    @Column(name = "sender")
-    private String sender;
+    @ManyToOne
+    @JoinColumn(name = "nick")
+    private Member sender;
 
     @Column(name = "message")
     private String message;

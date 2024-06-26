@@ -24,13 +24,14 @@ public class Review {
     @Column(nullable = false)
     private String taddr;
     @Column(nullable = false)
-    private String category;
+    private String tcategory;
     @Column(nullable = false)
-    private String tcontent;
+    private String rcontent;
     @Column(nullable = false)
-    private Date tdate;
+    private Date rdate;
     @Column(nullable = false)
     private int rate;
-    @Column(nullable = false)
-    private String nick;
+    @ManyToOne
+    @JoinColumn(name = "nick")
+    private Member rnick;
 }
