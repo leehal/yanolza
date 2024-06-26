@@ -34,7 +34,7 @@ class MemberRepositoryTest {
 
         Member member = Member.builder()
                 .nick("pp")
-                .authority(Authority.ROLL_USER)
+
                 .mid("pkmm")
                 .email("pkmm@naver")
                 .pwd("1234")

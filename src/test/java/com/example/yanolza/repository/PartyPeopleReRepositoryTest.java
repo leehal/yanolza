@@ -41,6 +41,19 @@ class PartyPeopleReRepositoryTest {
     EntityManager em;
     private Party party;
 
+    public void createMembers(){
+        for (int i = 0; i < 10; i++) {
+            Member member = Member.builder()
+                    .nick("pp"+i)
+                    .mid("pkmm"+i)
+                    .email("pkmm@naver"+i)
+                    .pwd("1234")
+                    .build();
+
+            memberRepository.save(member);
+        }
+    }
+
     public Member createMember() {
 
         Member member = Member.builder()
@@ -194,6 +207,16 @@ class PartyPeopleReRepositoryTest {
             for (PartyPeople p : partyPeopleList) {
                 log.info("성공 : "+p.getPartyPeopleNick());
             }
+        }
+    }
+
+    @Test
+    @DisplayName("전체 유저 조회")
+    public void selectAllUser(){
+        createMembers();
+        List<Member> members = memberRepository.findAll();
+        for (Member member : members) {
+            log.info("결과 : "+member);
         }
     }
 

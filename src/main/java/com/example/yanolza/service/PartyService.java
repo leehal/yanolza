@@ -1,6 +1,7 @@
 package com.example.yanolza.service;
 
 import com.example.yanolza.dto.CalendarDto;
+import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.PartyNameListDto;
 import com.example.yanolza.dto.PartyRequestDto;
 import com.example.yanolza.entity.Calendar;
@@ -113,7 +114,7 @@ public class PartyService {
         return list;
     }
 
-//    calendar insert
+    //    calendar insert
     public boolean calendarInsert(CalendarDto calendarDto) {
         boolean isTrue = false;
         Optional<Party> party = partyRepository.findById(calendarDto.getCalenderPno());
@@ -142,5 +143,14 @@ public class PartyService {
         return isTrue;
     }
 
-//    public boolean
+    // 모든 회원 전체 조회 // 나중에 준영님 주고 지운후 거기서 가져다 쓰기...
+    public List<MemberResDto> selectAllUsers() {
+        List<Member> members = memberRepository.findAll();
+        List<MemberResDto> list = new ArrayList<>();
+        for (Member member : members) {
+            MemberResDto mem =MemberResDto.of(member);
+            list.add(mem);
+        }
+        return list;
+    }
 }

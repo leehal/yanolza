@@ -1,9 +1,6 @@
 package com.example.yanolza.controller;
 
-import com.example.yanolza.dto.CalendarDto;
-import com.example.yanolza.dto.PartyNameListDto;
-import com.example.yanolza.dto.PartyRequestDto;
-import com.example.yanolza.dto.PartyResponseDto;
+import com.example.yanolza.dto.*;
 import com.example.yanolza.service.PartyService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +35,11 @@ public class PartyController {
         List<CalendarDto> calendarDtos = partyService.partyCalendarOneDay(pno,date);
         PartyResponseDto dto = new PartyResponseDto(calendarDtos,memberList);
         return ResponseEntity.ok(dto);
+    }
+//    모든 회원 전체 조회 // 나중에 준영님 주고 지우고 그거 가져다 axios로 가져다 쓰기..
+    @GetMapping("/alluser")
+    public ResponseEntity<List<MemberResDto>> allMemberList(){
+        List<MemberResDto> list = partyService.selectAllUsers();
+        return ResponseEntity.ok(list);
     }
 }
