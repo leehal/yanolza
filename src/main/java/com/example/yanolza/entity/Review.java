@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Slf4j
 public class Review {
+
     @Id
     @Column(name = "rno")
     @GeneratedValue(strategy = GenerationType.AUTO)
