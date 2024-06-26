@@ -58,7 +58,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<TokenDto> newToken(@RequestBody String refreshToken) {
-        log.info("refreshToken: {}", refreshToken);
+        log.warn("refreshToken: {}", refreshToken);
         return ResponseEntity.ok(authService.refreshAccessToken(refreshToken));
     }
     @GetMapping("/kakao")
