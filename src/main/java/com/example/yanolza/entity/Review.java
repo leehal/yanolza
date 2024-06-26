@@ -22,9 +22,9 @@ public class Review {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String taddr;
+    private String raddr;
     @Column(nullable = false)
-    private String tcategory;
+    private String rcategory;
     @Column(nullable = false)
     private String rcontent;
     @Column(nullable = false)
