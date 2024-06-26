@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 public class Travel {
-
     @Id
     @Column(name = "tno")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,16 +22,16 @@ public class Travel {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String addr; // 주소
+    private String taddr; // 주소
     private String image;
-    private String category; // 분류
+    private String tcategory; // 분류
     private String course;
     private String phone;
     private String homepage;
     private String main; // 대표 메뉴
     private String vehicle; // 교통수단
     private String park; // 주차
-    private int cost;
+    private int tprice;
     private LocalDateTime sdate; // 시작일
     private LocalDateTime edate; // 종료일
     private String time; // 시작 & 종료 시간, 시대, 입퇴실
