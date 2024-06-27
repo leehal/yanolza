@@ -72,8 +72,8 @@ class PartyPeopleReRepositoryTest {
     public Party createParty() {
 
         Party party = Party.builder()
-                .pdate(LocalDateTime.now())
-                .pname("강릉여행")
+//                .pdate(LocalDateTime.now())
+//                .pname("강릉여행")
                 .build();
         partyRepository.save(party);
 

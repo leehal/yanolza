@@ -34,7 +34,6 @@ public class ReviewDto {
                 .rate(review.getRate())
                 .rnick(review.getRnick().getNick())
                 .build();
-
     }
 
 }
