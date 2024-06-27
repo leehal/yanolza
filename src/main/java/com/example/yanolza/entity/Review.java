@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,14 +22,13 @@ public class Review {
     private Long rno;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
-    private String raddr;
-    @Column(nullable = false)
-    private String rcategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "taddr")
+    private Travel travel;
     @Column(nullable = false)
     private String rcontent;
     @Column(nullable = false)
-    private Date rdate;
+    private LocalDateTime rdate;
     @Column(nullable = false)
     private int rate;
     @ManyToOne

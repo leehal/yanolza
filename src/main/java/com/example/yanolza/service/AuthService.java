@@ -29,7 +29,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 public class AuthService {
-//    private final JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
     private final AuthenticationManagerBuilder managerBuilder;
     private final MemberRepository memberRepository;
     private final SocialRepository socialRepository;
@@ -53,37 +53,55 @@ public class AuthService {
             else return null;
         }
 
-//    public String certEmail(String email) {
-//
-//        Random random = new Random();
-//        int min = 111111;
-//        int max = 999999;
-//        String certification = String.valueOf(random.nextInt(max - min + 1) + min);
-//        System.out.println("인증 번호 : " + certification);
-//
-//        String htmlContent = "<div style=\"text-align: center; display:flex; flex-direction:column; justify-content:center; text-align:center;\">"
-//                + "<p style=\"font-size:30px; display: block;\">안나와 아이들들 인증번호 입니다.</p>"
-//                + "<p></p>"
-//                + "<p style=\"font-size:16px; display: block;\">아래의 인증 번호를 입력해주세요.</p>"
-//                + "<p></p>"
-//                + "<div style=\"font-size:20px; font-style:bold; width: 100%; height:50px; border: 1px solid #c6c6c6; display: block;\">" + certification + "</div>"
-//                + "</div>";
-//
-//        MimeMessage mimeMessage = mailSender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-//        try {
-//            helper.setFrom("anna&idle@naver.com");
-//            helper.setTo(email);
-//            helper.setSubject("안나와 아이들들 인증");
-//            helper.setText(htmlContent, true);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        } catch (javax.mail.MessagingException e) {
-//            throw new RuntimeException(e);
-//        }
-//        mailSender.send(mimeMessage);
-//        return certification.toString();
-//    }
+    public String certEmail(String email) {
+
+        Random random = new Random();
+        int min = 111111;
+        int max = 999999;
+        String certification = String.valueOf(random.nextInt(max - min + 1) + min);
+        System.out.println("인증 번호 : " + certification);
+
+        String htmlContent = "<div style=\"width: 100%; background-color: #f9f9f9; padding: 20px;\">"
+                + "<div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border: 1px solid #eaeaea; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\">"
+                + "<div style=\"padding: 20px; text-align: center; background-color: #ffeb3b;\">"
+                + "<h1 style=\"margin: 0; font-size: 24px; color: #333333;\">안나와아이들계정</h1>"
+                + "</div>"
+                + "<div style=\"padding: 20px; color: #333333;\">"
+                + "<p style=\"margin: 0 0 20px; font-weight: bold;\">안나와아이들계정 연락처 등록을 위한 인증번호입니다.</p>"
+                + "<p style=\"margin: 0 0 20px; font-size: 15px\">아래 인증번호를 확인하여 이메일 주소 인증을 완료해 주세요.</p>"
+                + "<div style=\"width: 100%; border-collapse: collapse; margin: 20px 0;\">"
+                + "<div style=\"display: flex; gap:15px; padding: 15px; border-top: 1px solid #eaeaea; \">"
+                + "<strong style=\"width:120px;\">연락처 이메일</strong>"
+                + "<span>"+email+"</span>"
+                + "</div>"
+                + "<div style=\"display: flex; gap:15px; padding: 15px; border-bottom: 1px solid #eaeaea;\">"
+                + "<strong style=\"width:120px;\">인증번호</strong>"
+                + "<span>"+certification+"</span>"
+                + "</div>"
+                + "</div>"
+                + "<p style=\"margin: 0 0 20px; font-size: 12px; color: #666666;\">본 메일은 발신전용입니다.</p>"
+                + "</div>"
+                + "<div style=\"padding: 20px; text-align: center; background-color: #f1f1f1; font-size: 12px; color: #666666;\">"
+                + "Copyright © 안나와아이들. All rights reserved."
+                + "</div>"
+                + "</div>"
+                + "</div>";
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+        try {
+            helper.setFrom("y971030@naver.com");
+            helper.setTo(email);
+            helper.setSubject("안나와 아이들들 인증");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (javax.mail.MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        mailSender.send(mimeMessage);
+        return certification.toString();
+    }
 
     public MemberResDto signup(MemberReqDto requestDto) {
         Member member = requestDto.toEntity(passwordEncoder);
