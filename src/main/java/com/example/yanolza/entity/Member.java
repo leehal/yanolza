@@ -27,6 +27,8 @@ public class Member {
     @Column(unique = true)
     private String email;
     private String image;
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
     private String social;
     @Column(name="refresh_token")
     private String refreshToken;
@@ -34,12 +36,13 @@ public class Member {
     private Long refreshTokenExpiresIn;
 
     @Builder
-    public Member(String nick, String mid, String pwd, String email, String image, String social) {
+    public Member(String nick, String mid, String pwd, String email, String image, String social,Authority authority) {
         this.nick = nick;
         this.mid = mid;
         this.pwd = pwd;
         this.email = email;
         this.image = image;
         this.social = social;
+        this.authority = authority;
     }
 }

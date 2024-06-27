@@ -1,5 +1,6 @@
 package com.example.yanolza.entity;
 
+import com.example.yanolza.constant.TF;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "friend")
 @Slf4j
 public class Friend {
     @Id
@@ -19,11 +21,12 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long fno;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nick")
+    @JoinColumn(name = "sender")
     private Member from;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uno")
+    @JoinColumn(name = "receiver")
     private Member to;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String accept;
+    private TF accept;
 }

@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/my")
 @RequiredArgsConstructor
 public class MyController {
-    @Autowired
-    MemberService memberService;
+    public final MemberService memberService;
 
     @GetMapping("/detail")
     public ResponseEntity<MemberResDto> memberDetail() {

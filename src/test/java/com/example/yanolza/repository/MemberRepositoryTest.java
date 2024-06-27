@@ -42,6 +42,23 @@ class MemberRepositoryTest {
         memberRepository.save(member);
     }
 
+    public void createMembers(){
+        for (int i = 0; i < 10; i++) {
+            Member member = Member.builder()
+                    .nick("pp"+i)
+                    .mid("pkmm"+i)
+                    .email("pkmm@naver"+i+".com")
+                    .pwd("1234")
+                    .build();
+
+            memberRepository.save(member);
+        }
+    }
+    @Test
+    @DisplayName("회원가입")
+    public void signup() {
+        createMembers();
+    }
     @Test
     @DisplayName("로그인")
     public void login() {

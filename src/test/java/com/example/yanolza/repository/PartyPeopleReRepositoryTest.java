@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Slf4j
-@TestPropertySource(locations = "classpath:application-test.properties")
+//@TestPropertySource(locations = "classpath:application-test.properties")
 class PartyPeopleReRepositoryTest {
     @Autowired
     PartyPeopleReRepository partyPeopleReRepository;
