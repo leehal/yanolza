@@ -1,29 +1,20 @@
-package com.example.yanolza.entity;
+package com.example.yanolza.dto;
 
+import com.example.yanolza.entity.Travel;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "travel")
 @Getter
 @Setter
-@ToString
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Travel {
-    @Id
-    @Column(name = "tno")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long tno;
-    @Column(nullable = false)
+@AllArgsConstructor
+@Builder
+public class TravelDto {
     private String tname;
-    @Column(nullable = false)
-    private String taddr; // 주소
-    private boolean book; // 예약 (자동 not null)
-    private int tprice; // (자동 not null)
+    private String taddr;
+    private boolean book;
+    private int tprice;
     private String timage;
     private String tcategory; // 분류
     private String course;
@@ -35,6 +26,15 @@ public class Travel {
     private LocalDateTime sdate; // 시작일
     private LocalDateTime edate; // 종료일
     private String time; // 시작 & 종료 시간, 시대, 입퇴실
-    private String guide;  // 셋 중 하나 고민 중
+    private String guide;
     private String info;
+
+    public static TravelDto of(Travel travel) {
+        return TravelDto.builder()
+                .tname(travel.getTname())
+                .taddr(travel.getTaddr())
+                .book(travel.isBook())
+                .tprice(travel.getTprice())
+                .build();
+    }
 }
