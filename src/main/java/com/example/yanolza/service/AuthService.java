@@ -95,6 +95,7 @@ public class AuthService {
         UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
 
         Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         TokenDto token = tokenProvider.generateTokenDto(authentication);
         log.info(String.valueOf(token));
