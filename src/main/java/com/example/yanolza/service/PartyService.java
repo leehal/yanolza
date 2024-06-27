@@ -39,16 +39,16 @@ public class PartyService {
     public boolean partyInsert(PartyRequestDto reqDto) {
         boolean isTrue = false;
         List<String> nickName = reqDto.getNick();
-        String pname = reqDto.getPName();
+        String pname1 = reqDto.getPname();
 
         Party party = Party.builder()
-                .pname(pname)
+                .pname(pname1)
                 .pdate(LocalDateTime.now())
                 .build();
 
         partyRepository.save(party);
 
-        Optional<Party> partyPname = partyRepository.findByPname(pname);
+        Optional<Party> partyPname = partyRepository.findByPname(pname1);
         if (partyPname.isPresent()) {
             for (String s : nickName) {
                 Optional<Member> member = memberRepository.findByNick(s);
@@ -148,7 +148,7 @@ public class PartyService {
         List<Member> members = memberRepository.findAll();
         List<MemberResDto> list = new ArrayList<>();
         for (Member member : members) {
-            MemberResDto mem =MemberResDto.of(member);
+            MemberResDto mem = MemberResDto.of(member);
             list.add(mem);
         }
         return list;
