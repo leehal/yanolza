@@ -4,6 +4,7 @@ import com.example.yanolza.entity.Review;
 import com.example.yanolza.entity.Travel;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ReviewDto {
     private String tcategory;
     private String rcategory;
     private String rcontent;
-    private Date rdate;
+    private LocalDateTime rdate;
     private int rate;
     private String rnick;
 

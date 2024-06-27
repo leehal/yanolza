@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -27,7 +28,7 @@ public class Review {
     @Column(nullable = false)
     private String rcontent;
     @Column(nullable = false)
-    private Date rdate;
+    private LocalDateTime rdate;
     @Column(nullable = false)
     private int rate;
     @ManyToOne
