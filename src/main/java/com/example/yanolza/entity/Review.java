@@ -21,10 +21,9 @@ public class Review {
     private Long rno;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
-    private String raddr;
-    @Column(nullable = false)
-    private String rcategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "taddr")
+    private Travel travel;
     @Column(nullable = false)
     private String rcontent;
     @Column(nullable = false)

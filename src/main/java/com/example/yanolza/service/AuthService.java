@@ -90,7 +90,7 @@ public class AuthService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         try {
-            helper.setFrom("안나와 아이들들");
+            helper.setFrom("y971030@naver.com");
             helper.setTo(email);
             helper.setSubject("안나와 아이들들 인증");
             helper.setText(htmlContent, true);
