@@ -51,10 +51,10 @@ public class AuthController {
         return ResponseEntity.ok(authService.resetPw(memberReqDto));
     }
 
-//    @GetMapping("/certemail")
-//    public ResponseEntity<String> certEmail(@RequestParam String email) {
-//        return ResponseEntity.ok(authService.certEmail(email));
-//    }
+    @GetMapping("/certemail")
+    public ResponseEntity<String> certEmail(@RequestParam String email) {
+        return ResponseEntity.ok(authService.certEmail(email));
+    }
 
     @PostMapping("/refresh")
     public ResponseEntity<TokenDto> newToken(@RequestBody String refreshToken) {
