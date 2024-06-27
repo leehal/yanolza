@@ -1,6 +1,5 @@
 package com.example.yanolza.dto;
 
-<<<<<<< HEAD
 import lombok.*;
 
 import java.util.Date;
@@ -19,7 +18,4 @@ public class ReviewDto {
     private Date rdate;
     private int rate;
     private String nick;
-=======
-public class ReviewDto {
->>>>>>> d67f8b7d8cf146439ddcc5f6023580b64e51841a
 }
