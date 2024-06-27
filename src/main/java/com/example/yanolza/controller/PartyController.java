@@ -20,6 +20,8 @@ public class PartyController {
 //   save party
     @PostMapping("/save")
     public ResponseEntity<Boolean> createParty(@RequestBody PartyRequestDto requestDto){
+        log.info(requestDto.getPname());
+        log.info(requestDto.getNick().toString());
         return ResponseEntity.ok(partyService.partyInsert(requestDto));
     }
 //    내 모임명과 해당 pno list 반환

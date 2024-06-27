@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Slf4j
-@TestPropertySource(locations = "classpath:application-test.properties")
+//@TestPropertySource(locations = "classpath:application-test.properties")
 class PartyPeopleReRepositoryTest {
     @Autowired
     PartyPeopleReRepository partyPeopleReRepository;
@@ -96,6 +96,10 @@ class PartyPeopleReRepositoryTest {
                     .partyPeopleNick(member)
                     .partyPeoplePno(partypno.get())
                     .build();
+
+            PartyPeople partyPeople1 = new PartyPeople();
+            partyPeople1.setPartyPeopleNick(member);
+            partyPeople1.setPartyPeoplePno(partypno.get());
 
             partyPeopleReRepository.save(partyPeople);
             log.info("결과는 : " + partyPeople.getPartyPeopleNick());

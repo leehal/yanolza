@@ -35,6 +35,10 @@ public class TravelDto {
                 .taddr(travel.getTaddr())
                 .book(travel.isBook())
                 .tprice(travel.getTprice())
+                .info(travel.getInfo())
+                .course(travel.getCourse())
+                .guide(travel.getGuide())
+                .timage(travel.getTimage())
                 .build();
     }
 }

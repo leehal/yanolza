@@ -11,5 +11,5 @@ import java.util.List;
 @Builder
 public class PartyRequestDto {
     private List<String> nick;
-    private String pName;
+    private String pname;
 }
