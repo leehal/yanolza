@@ -68,4 +68,6 @@ public class AuthController {
         System.out.println("token : "+tokenDto);
         return ResponseEntity.ok(tokenDto);
     }
+//    @PostMapping("/ad")
+//    public ResponseEntity<Boolean> ad(@RequestBody )
 }

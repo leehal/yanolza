@@ -25,6 +25,7 @@ public class FriendService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
+    //친구신청
     public Boolean friendApplication(FriendDto friendDto) {
         Member from = memberRepository.findByNick(friendDto.getFrom())
                 .orElseThrow(() -> new NoSuchElementException("맴버를 찾을수없습니다: " + friendDto.getFrom()));
@@ -38,10 +39,28 @@ public class FriendService {
                         .build());
         return friend != null;
     }
+    //내친구 목록
     public List<FriendDto> selectAllFriends() {
         Member member = memberService.memberIdFindMember();
         List<FriendDto> list = new ArrayList<>();
-        List<Friend> from = friendRepository.findByFrom(member);
+        List<Friend> from = friendRepository.findByFromAndAccept(member, TF.TRUE.toString());
+        List<Friend> to = friendRepository.findByFromAndAccept(member, TF.TRUE.toString());
+
+        for (Friend friend : from) {
+            FriendDto fnd = FriendDto.of(friend);
+            list.add(fnd);
+        }
+        for (Friend friend : to) {
+            FriendDto fnd = FriendDto.of(friend);
+            list.add(fnd);
+        }
+        return list;
+    }
+    //내가 보낸 친구신청 목록 (중복신청 막기위해)
+    public List<FriendDto> allicationFriends() {
+        Member member = memberService.memberIdFindMember();
+        List<FriendDto> list = new ArrayList<>();
+        List<Friend> from = friendRepository.findByFromAndAccept(member, TF.FALSE.toString());
 
         for (Friend friend : from) {
             FriendDto fnd = FriendDto.of(friend);
@@ -49,5 +68,16 @@ public class FriendService {
         }
         return list;
     }
+    //내가 받은 친구신청 목록
+    public List<FriendDto> acceptFriends() {
+        Member member = memberService.memberIdFindMember();
+        List<FriendDto> list = new ArrayList<>();
+        List<Friend> to = friendRepository.findByToAndAccept(member, TF.FALSE.toString());
 
+        for (Friend friend : to) {
+            FriendDto fnd = FriendDto.of(friend);
+            list.add(fnd);
+        }
+        return list;
+    }
 }
