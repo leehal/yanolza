@@ -28,7 +28,6 @@ public class ReviewService {
             list.add(ReviewDto.of(e));
         }
         return list;
-
     }
 
 }

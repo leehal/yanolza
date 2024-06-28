@@ -34,18 +34,18 @@ class ReviewRepositoryTest {
 
     @Test
     @DisplayName("save 실험")
-    public void createMember() {
-        Long uno = (long)3;
-        Long pno = (long)4;
-        Optional<Member> member = memberRepository.findById(uno);
-        Optional<Travel> travel = travelRepository.findById(pno);
+    public void createMember(int pno, int uno, String content, String title, int trate) {
+        Long pno1 = (long) pno;
+        Long uno1 = (long) uno;
+        Optional<Member> member = memberRepository.findById(uno1);
+        Optional<Travel> travel = travelRepository.findById(pno1);
         if(member.isPresent()){
 
         Review review = Review.builder()
-                .rate(5)
-                .rcontent("친구들과 함께 간 여행 너무 좋은 추억 남기고 갑니다")
+                .rate(trate)
+                .rcontent(content)
                 .rdate(LocalDateTime.now())
-                .title("좋은 추억 남기고 갑니다.")
+                .title(title)
                 .rnick(member.get())
                 .travel(travel.get())
                 .build();
@@ -53,5 +53,10 @@ class ReviewRepositoryTest {
 
         reviewRepository.save(review);
         }
+    }
+
+    @Test
+    public void saves(){
+        createMember(4, 2, "전망이 너무 좋아요 다시 오고 싶어요 추천합니다!","전망 최고",5);
     }
 }
