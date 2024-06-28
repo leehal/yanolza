@@ -154,4 +154,19 @@ public class PartyService {
         }
         return list;
     }
+
+    //    모임에 따른 일정 전체 조회
+    public List<CalendarDto> selectCalendarPnoAll(int pno) {
+        List<CalendarDto> list = new ArrayList<>();
+        Long pno1 = (long) pno;
+        Optional<Party> party = partyRepository.findById(pno1);
+        if (party.isPresent()) {
+            List<Calendar> calendars = calendarRepository.findByCalenderPno(party.get());
+            for (Calendar c : calendars) {
+                CalendarDto dto = CalendarDto.of(c);
+                list.add(dto);
+            }
+        }
+        return list;
+    }
 }

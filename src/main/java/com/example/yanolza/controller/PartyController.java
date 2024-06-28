@@ -44,4 +44,10 @@ public class PartyController {
         List<MemberResDto> list = partyService.selectAllUsers();
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("/calendar")
+    public ResponseEntity<List<CalendarDto>> pnoCalendar(@RequestParam("pno") int pno){
+        List<CalendarDto> list = partyService.selectCalendarPnoAll(pno);
+        return ResponseEntity.ok(list);
+    }
 }

@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface CalendarRepository extends JpaRepository<Calendar,Long> {
     List<Calendar> findByCaDateAndCalenderPno(LocalDateTime date, Party pno);
 
+    List<Calendar> findByCalenderPno(Party pno);
+
 }

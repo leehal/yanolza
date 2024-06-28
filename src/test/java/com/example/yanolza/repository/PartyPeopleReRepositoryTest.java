@@ -41,12 +41,12 @@ class PartyPeopleReRepositoryTest {
     EntityManager em;
     private Party party;
 
-    public void createMembers(){
+    public void createMembers() {
         for (int i = 0; i < 10; i++) {
             Member member = Member.builder()
-                    .nick("pp"+i)
-                    .mid("pkmm"+i)
-                    .email("pkmm@naver"+i)
+                    .nick("pp" + i)
+                    .mid("pkmm" + i)
+                    .email("pkmm@naver" + i)
                     .pwd("1234")
                     .build();
 
@@ -72,8 +72,8 @@ class PartyPeopleReRepositoryTest {
     public Party createParty() {
 
         Party party = Party.builder()
-//                .pdate(LocalDateTime.now())
-//                .pname("강릉여행")
+                .pdate(LocalDateTime.now())
+                .pname("강릉여행")
                 .build();
         partyRepository.save(party);
 
@@ -188,14 +188,14 @@ class PartyPeopleReRepositoryTest {
         if (member.isPresent()) {
             Member memNick = member.get();
             List<PartyPeople> partyPeopleList = partyPeopleReRepository.findByPartyPeopleNick(memNick);
-            if (!partyPeopleList.isEmpty()){
+            if (!partyPeopleList.isEmpty()) {
                 for (PartyPeople p : partyPeopleList) {
-                    List<Calendar> calendars = calendarRepository.findByCaDateAndCalenderPno(dateTime,p.getPartyPeoplePno());
+                    List<Calendar> calendars = calendarRepository.findByCaDateAndCalenderPno(dateTime, p.getPartyPeoplePno());
                     for (Calendar c : calendars) {
-                        log.info("결과 : "+c.getCaContent());
+                        log.info("결과 : " + c.getCaContent());
                     }
                 }
-            }else {
+            } else {
                 log.info("실패");
             }
         }
@@ -203,24 +203,37 @@ class PartyPeopleReRepositoryTest {
 
     @Test
     @DisplayName("Pno로 파티 멤버 조회")
-    public void selectPartyMember(){
+    public void selectPartyMember() {
         createTestParty();
         Optional<Party> party = partyRepository.findByPname("강릉여행");
         if (party.isPresent()) {
             List<PartyPeople> partyPeopleList = partyPeopleReRepository.findByPartyPeoplePno(party.get());
             for (PartyPeople p : partyPeopleList) {
-                log.info("성공 : "+p.getPartyPeopleNick());
+                log.info("성공 : " + p.getPartyPeopleNick());
             }
         }
     }
 
     @Test
     @DisplayName("전체 유저 조회")
-    public void selectAllUser(){
+    public void selectAllUser() {
         createMembers();
         List<Member> members = memberRepository.findAll();
         for (Member member : members) {
-            log.info("결과 : "+member);
+            log.info("결과 : " + member);
+        }
+    }
+
+    @Test
+    @DisplayName("모임에 따른 캘린더 전체 조회")
+    public void selectAllCalendarPno() {
+        createCalendar();
+        Optional<Party> party = partyRepository.findByPname("강릉여행");
+        if (party.isPresent()) {
+            List<Calendar> list = calendarRepository.findByCalenderPno(party.get());
+            for (Calendar calendar : list) {
+                log.info("결과 : "+ calendar);
+            }
         }
     }
 
