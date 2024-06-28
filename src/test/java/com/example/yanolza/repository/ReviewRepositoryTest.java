@@ -35,20 +35,21 @@ class ReviewRepositoryTest {
     @Test
     @DisplayName("save 실험")
     public void createMember() {
-        Long uno = (long)2;
+        Long uno = (long)3;
         Long pno = (long)4;
         Optional<Member> member = memberRepository.findById(uno);
         Optional<Travel> travel = travelRepository.findById(pno);
         if(member.isPresent()){
 
         Review review = Review.builder()
-                .rate(4)
-                .rcontent("너무 재밌었어요")
+                .rate(5)
+                .rcontent("친구들과 함께 간 여행 너무 좋은 추억 남기고 갑니다")
                 .rdate(LocalDateTime.now())
-                .title("재미난 강릉 여행")
+                .title("좋은 추억 남기고 갑니다.")
                 .rnick(member.get())
                 .travel(travel.get())
                 .build();
+
 
         reviewRepository.save(review);
         }
