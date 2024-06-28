@@ -34,11 +34,13 @@ class ReviewRepositoryTest {
 
     @Test
     @DisplayName("save 실험")
-    public void createMember(int pno, int uno, String content, String title, int trate) {
-        Long pno1 = (long) pno;
+    public void createReview(int tno, int uno, String content, String title, int trate) {
+        Long tno1 = (long) tno;
         Long uno1 = (long) uno;
         Optional<Member> member = memberRepository.findById(uno1);
-        Optional<Travel> travel = travelRepository.findById(pno1);
+        log.info(member.toString());
+        Optional<Travel> travel = travelRepository.findById(tno1);
+        log.info(travel.toString());
         if(member.isPresent()){
 
         Review review = Review.builder()
@@ -57,6 +59,6 @@ class ReviewRepositoryTest {
 
     @Test
     public void saves(){
-        createMember(4, 2, "전망이 너무 좋아요 다시 오고 싶어요 추천합니다!","전망 최고",5);
+        createReview(1, 11, "전망이 너무 좋아요 다시 오고 싶어요 추천합니다!","전망 최고",5);
     }
 }

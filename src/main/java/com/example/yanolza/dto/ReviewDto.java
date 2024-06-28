@@ -1,8 +1,12 @@
 package com.example.yanolza.dto;
 
+import com.example.yanolza.constant.Authority;
+import com.example.yanolza.entity.Member;
 import com.example.yanolza.entity.Review;
 import com.example.yanolza.entity.Travel;
+import com.example.yanolza.repository.TravelRepository;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -12,10 +16,13 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+
 public class ReviewDto {
+    private final TravelRepository travelRepository;
+
     private String title;
-    private String taddr;
+    private int tno;
     private String tcategory;
     private String rcategory;
     private String rcontent;
@@ -23,11 +30,10 @@ public class ReviewDto {
     private int rate;
     private String rnick;
 
-    public static ReviewDto of (Review review)
-    {
+    public static ReviewDto of (Review review) {
         return ReviewDto.builder()
                 .title(review.getTitle())
-                .taddr(review.getTravel().getTaddr())
+                .tno(review.getTravel().getTno().intValue())
                 .tcategory(review.getTravel().getTcategory())
                 .rcontent(review.getRcontent())
                 .rdate(review.getRdate())
@@ -35,5 +41,6 @@ public class ReviewDto {
                 .rnick(review.getRnick().getNick())
                 .build();
     }
+
 
 }

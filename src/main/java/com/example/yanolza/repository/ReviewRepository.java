@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {
-    List<Review> findByTravel_Taddr (String taddr);
+    List<Review> findByTravel_Tno (Long tno);
 }

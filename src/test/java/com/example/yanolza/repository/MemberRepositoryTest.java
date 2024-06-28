@@ -49,6 +49,7 @@ class MemberRepositoryTest {
                     .mid("pkmm"+i)
                     .email("pkmm@naver"+i+".com")
                     .pwd("1234")
+                    .authority(Authority.ROLL_USER)
                     .build();
 
             memberRepository.save(member);

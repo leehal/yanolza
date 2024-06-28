@@ -23,7 +23,7 @@ public class Review {
     @Column(nullable = false)
     private String title;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "taddr")
+    @JoinColumn(name = "tno")
     private Travel travel;
     @Column(nullable = false)
     private String rcontent;
