@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -20,9 +21,9 @@ public class Advertisement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ano;
     @Column(nullable = false)
-    private String aimg;
+    private String aimage;
     @Column(nullable = false)
-    private LocalDateTime adate;
+    private Long adate;
     @Column(nullable = false)
-    private int price;
+    private String alink;
 }

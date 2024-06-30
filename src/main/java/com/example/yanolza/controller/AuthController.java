@@ -1,18 +1,18 @@
 package com.example.yanolza.controller;
 
+import com.example.yanolza.dto.AdvertisementDto;
 import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.TokenDto;
-import com.example.yanolza.entity.Member;
+import com.example.yanolza.repository.AdvertisementRepository;
+import com.example.yanolza.service.AdvertisementService;
 import com.example.yanolza.service.AuthService;
 import com.example.yanolza.service.SocialService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -22,6 +22,8 @@ import java.util.Map;
 public class AuthController {
     private final AuthService authService;
     private final SocialService socialService;
+    private final AdvertisementService advertisementService;
+    private final AdvertisementRepository advertisementRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<MemberResDto> signup(@RequestBody MemberReqDto requestDto) {
@@ -68,6 +70,13 @@ public class AuthController {
         System.out.println("token : "+tokenDto);
         return ResponseEntity.ok(tokenDto);
     }
-//    @PostMapping("/ad")
-//    public ResponseEntity<Boolean> ad(@RequestBody )
+    @PostMapping("/adpublished")
+    public ResponseEntity<Boolean> adList(@RequestBody AdvertisementDto advertisementDto){
+        return ResponseEntity.ok(advertisementService.adPublish(advertisementDto));
+    }
+
+    @GetMapping("/adlist")
+    public ResponseEntity<List<AdvertisementDto>> adList(@RequestParam Long now){
+        return ResponseEntity.ok(advertisementService.adList(now));
+    }
 }

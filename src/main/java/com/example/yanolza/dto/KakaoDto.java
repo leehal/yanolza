@@ -1,5 +1,6 @@
 package com.example.yanolza.dto;
 
+import com.example.yanolza.constant.Authority;
 import com.example.yanolza.entity.Member;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
@@ -42,6 +43,7 @@ public class KakaoDto {
                     .nick(kakaoAccount.getProfile().getNick())
                     .image(kakaoAccount.getProfile().getProfileImageUrl())
                     .social("KAKAO")
+                    .authority(Authority.ROLL_USER)
                     .build();
         }
     }
