@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class TravelDto {
+    private Long tno;
     private String tname;
     private String taddr;
     private boolean book;
@@ -31,6 +32,7 @@ public class TravelDto {
 
     public static TravelDto of(Travel travel) {
         return TravelDto.builder()
+                .tno(travel.getTno())
                 .tname(travel.getTname())
                 .taddr(travel.getTaddr())
                 .book(travel.isBook())

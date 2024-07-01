@@ -18,8 +18,8 @@ public class Dibs {
     @Column(name = "dno")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long dno;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "nick")
-    private Member dibsNick;
-    private String daddr;
+    private Member dnick;
+    private Long tno;
 }

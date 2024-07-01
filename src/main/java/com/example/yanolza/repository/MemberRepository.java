@@ -2,6 +2,8 @@ package com.example.yanolza.repository;
 
 import com.example.yanolza.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +12,8 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     Optional<Member> findByEmail(String email); //optional null 방지
     Optional<Member> findByMid(String email); //optional null 방지
     Optional<Member> findByNick(String email); //optional null 방지
-    List<Member> findAll();
+    @Query(value = "SELECT * FROM member WHERE mid != :id", nativeQuery = true)
+    List<Member> findAllExceptMine(@Param("id") String id);
     Optional<Member> findByEmailAndPwd(String email, String pwd);
     boolean existsByEmail(String email);
     boolean existsByNick(String nick);

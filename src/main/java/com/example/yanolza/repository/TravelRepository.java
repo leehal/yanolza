@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface TravelRepository extends JpaRepository<Travel,Long> {
     // Optional, findByAll, save는 안에 쓰지 않음
-
+    Optional<Travel> findByTno(Long Tno);
 }
 
 // findById : PK값으로 조회

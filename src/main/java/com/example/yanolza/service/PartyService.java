@@ -145,8 +145,8 @@ public class PartyService {
 
     // 모든 회원 전체 조회 // 나중에 준영님 주고 지운후 거기서 가져다 쓰기...
     public List<MemberResDto> selectAllUsers() {
-
-        List<Member> members = memberRepository.findAll();
+        String mid = memberService.memberIdFindMember().getMid();
+        List<Member> members = memberRepository.findAllExceptMine(mid);
         List<MemberResDto> list = new ArrayList<>();
         for (Member member : members) {
             MemberResDto mem = MemberResDto.of(member);
