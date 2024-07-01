@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 public class ChatRoomReqDto {
     //    방개설 요청
-    private String email; // 사실 필요 X
+    private String nick; // 사실 필요 X
     private String name;
 }

@@ -7,6 +7,9 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+// WebSocket의 설정을 관리합니다.
+// WebSocket 엔드포인트를 등록하고, 특정 경로에서 WebSocketHandler를 매핑하는 역할을 합니다.
+// CORS 설정이나 WebSocket의 다양한 속성을 설정할 수 있습니다.
 @Configuration // Spring의 설정 클래스임을 나타내고 이 클래스를 빈으로 등록하고, 관련된 다른 빈들과의 의존성 주입을 처리할 수 있습니다.
 @RequiredArgsConstructor // final 필드나 @NonNull으로 선언된 필드에 대한 생성자를 자동으로 생성하여 의존성 주입을 편리하게 처리할 수 있습니다.
 @EnableWebSocket // Spring이 WebSocket 관련 구성을 인식하고 처리하기 위한 어노테이션

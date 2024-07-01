@@ -2,8 +2,12 @@ package com.example.yanolza.service;
 
 import com.example.yanolza.dto.ChatMessageDto;
 import com.example.yanolza.dto.ChatRoomResDto;
+import com.example.yanolza.entity.Chatting;
 import com.example.yanolza.entity.ChattingRoom;
+import com.example.yanolza.entity.Member;
+import com.example.yanolza.repository.ChattingRepository;
 import com.example.yanolza.repository.ChattingRoomRepository;
+import com.example.yanolza.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +26,22 @@ import java.util.*;
 public class ChatService {
     private final ObjectMapper objectMapper;
     private final ChattingRoomRepository chatRoomRepository;
+    private final ChattingRepository chattingRepository;
+    private final MemberRepository memberRepository;
+    private  Map<String, List<WebSocketSession>> roomSessions = new HashMap<>();
     private Map<String , ChatRoomResDto> chatRooms; // 채팅방 정보를 담을 앱
     @PostConstruct // 의존성 주입 이후 초기화를 수행하는 메소드
     private void init() { // 채팅방 정보를 담을 맵을 초기화 // init(): 메서드 이름은 보통 **초기화(Initialization)**를 의미합니다. 여기서는 chatRooms 변수를 초기화하는 역할을 합니다.
         chatRooms = new LinkedHashMap<>(); // 채팅방 정보를 담을 맵 // LinkedHashMap: 이는 자바의 Map 인터페이스를 구현한 클래스 중 하나로, 삽입 순서를 유지하는 맵
         // chatRooms 변수를 LinkedHashMap으로 초기화함으로써, 새로운 ChatRoomResDto 객체들이 삽입된 순서대로 정렬된 상태로 저장됩니다.
+        List<ChattingRoom> roomList = chatRoomRepository.findAll();
+        for (ChattingRoom cr : roomList) {
+            ChatRoomResDto dto = ChatRoomResDto.builder()
+                    .roomId(cr.getRoomId())
+                    .name(cr.getRoomName())
+                    .build();
+            chatRooms.put(cr.getRoomId(), dto);
+        }
     }
     public List<ChatRoomResDto> findAllRoom() { // 채팅방 리스트 반환
         return new ArrayList<>(chatRooms.values()); // chatRooms은 Map으로 key와 value로 정의 되어었음. chatRooms의 value를 list로 뽑기.
@@ -41,6 +56,7 @@ public class ChatService {
         // UUID: UUID는 Universally Unique Identifier의 약자로, 전 세계적으로 고유한 식별자를 생성하는 데 사용됩니다. 이는 주로 중복될 가능성이 거의 없는 고유한 ID를 필요로 하는 시스템에서 사용됩니다.
         // randomUUID(): UUID 클래스의 randomUUID 메서드는 랜덤한 UUID를 생성합니다. 이 메서드는 표준에 따라 128비트의 임의의 값을 생성하며, 이 값은 매우 낮은 확률로 중복될 수 있습니다.
         log.info("UUID : " + randomId);
+
         ChatRoomResDto chatRoom = ChatRoomResDto.builder() // 채팅방 생성
                 .roomId(randomId)
                 .name(name)
@@ -53,6 +69,7 @@ public class ChatService {
         newChatRoom.setRoomId(chatRoom.getRoomId());
         newChatRoom.setRoomName(chatRoom.getName());
         newChatRoom.setCreatedAt(chatRoom.getRegDate());
+        chatRooms.put(randomId, chatRoom);
         chatRoomRepository.save(newChatRoom);
 
         return chatRoom; // 생성한 채팅방을 리턴
@@ -110,5 +127,28 @@ public class ChatService {
         } catch(IOException e) {
             log.error(e.getMessage(), e);
         }
+    }
+    // 메세지 저장
+    public void saveMessage(String roomId, String senderNick, String message){
+        ChattingRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("해당 채팅방이 존재하지 않습니다."));
+        Member user =memberRepository.findByNick(senderNick)
+                .orElseThrow(() -> new RuntimeException("해당 닉네임이 존재하지 않습니다."));
+        Chatting chat = Chatting.builder()
+                .chatRoom(chatRoom)
+                .message(message)
+                .sender(user)
+                .sentAt(LocalDateTime.now())
+                .build();
+        chattingRepository.save(chat);
+    }
+    // 세션 수 가져오기
+    public int getSessionCount(String roomId) {
+        List<WebSocketSession> sessions = roomSessions.get(roomId);
+        return sessions != null ? sessions.size() : 0;
+    }
+    // 이전 채팅 가져오기
+    public List<Chatting> getRecentMessages(String roomId) {
+        return chattingRepository.findRecentMessages(roomId);
     }
 }
