@@ -29,10 +29,17 @@ public class ReviewController {
         List<ReviewDto> list = reviewService.findByTno(tno);
         return ResponseEntity.ok(list);
     }
+
     @PostMapping("/reviewlist")
-    public ResponseEntity<Boolean> createReview(@RequestBody ReviewDto review){
-        return ResponseEntity.ok( reviewService.saveReview(review));
+    public ResponseEntity<Boolean> createReview(@RequestBody ReviewDto review) {
+        return ResponseEntity.ok(reviewService.saveReview(review));
     }
 
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Boolean> reviewDelete(@PathVariable Long id) {
+        boolean result = reviewService.reviewDelete(id);
+        return ResponseEntity.ok(result);
+    }
 }
+
 

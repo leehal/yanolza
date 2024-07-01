@@ -26,8 +26,9 @@ public class ReviewDto {
     private LocalDateTime rdate;
     private int rate;
     private String rnick;
+    private boolean identify;
 
-    public static ReviewDto of (Review review) {
+    public static ReviewDto of (Review review, Boolean identify) {
         return ReviewDto.builder()
                 .title(review.getTitle())
                 .tno(review.getTravel().getTno().intValue())
@@ -36,6 +37,7 @@ public class ReviewDto {
                 .rdate(review.getRdate())
                 .rate(review.getRate())
                 .rnick(review.getRnick().getNick())
+                .identify(identify)
                 .build();
     }
 }

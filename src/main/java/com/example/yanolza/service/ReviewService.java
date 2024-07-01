@@ -32,10 +32,11 @@ public class ReviewService {
 
     //tno가 같은 review 리스트 보여주기
     public List<ReviewDto> findByTno(Long tno) {
+        Member member = memberService.memberIdFindMember();
         List<ReviewDto> list = new ArrayList<>();
         List<Review> reviewList = reviewRepository.findByTravel_Tno(tno);
         for (Review e : reviewList) {
-            list.add(ReviewDto.of(e));
+            list.add(ReviewDto.of(e,member.getNick().equals(e.getRnick().getNick())));
         }
         return list;
     }
@@ -60,5 +61,18 @@ public class ReviewService {
 
        else {isTrue = false; }
        return isTrue;
+    }
+    // 댓글 삭제
+    public boolean reviewDelete(Long id) {
+        try {
+            Review review = reviewRepository.findById(id).orElseThrow(
+                    () -> new RuntimeException("해당 댓글이 존재하지 않습니다.")
+            );
+            reviewRepository.delete(review);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
