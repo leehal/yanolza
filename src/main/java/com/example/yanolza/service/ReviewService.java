@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class ReviewService {
+    private final MemberService memberService;
     private final ReviewRepository reviewRepository;
     private final TravelRepository travelRepository;
     private final MemberRepository memberRepository;
@@ -40,25 +42,23 @@ public class ReviewService {
 
     public boolean saveReview(ReviewDto reviewDto) {
         boolean isTrue = false;
+        Member member= memberService.memberIdFindMember();
         Long tno = (long)reviewDto.getTno();
         Optional<Travel> travel =travelRepository.findById(tno);
-        Optional<Member> member = memberRepository.findByNick(reviewDto.getRnick());
         if(travel.isPresent()) {
-            if (member.isPresent()) {
                 Review review = Review.builder()
                         .title(reviewDto.getTitle())
                         .travel(travel.get())
                         .rcontent(reviewDto.getRcontent())
                         .rate(reviewDto.getRate())
-                        .rnick(member.get())
+                        .rdate(LocalDateTime.now())
+                        .rnick(member)
                         .build();
-
                 reviewRepository.save(review);
                 isTrue = true;
             }
-        }
-        return isTrue;
+
+       else {isTrue = false; }
+       return isTrue;
     }
-
-
 }

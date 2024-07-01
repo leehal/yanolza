@@ -17,10 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-
 public class ReviewDto {
-    private final TravelRepository travelRepository;
-
     private String title;
     private int tno;
     private String tcategory;
@@ -41,6 +38,4 @@ public class ReviewDto {
                 .rnick(review.getRnick().getNick())
                 .build();
     }
-
-
 }
