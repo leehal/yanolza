@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
@@ -40,7 +41,7 @@ public class ChatController {
     // 메세지 저장하기
     @PostMapping("/message")
     public ResponseEntity<Void> saveMessage(@RequestBody ChatMessageDto chatMessageDTO) {
-        chatService.saveMessage(chatMessageDTO.getRoodId(), chatMessageDTO.getSender(), chatMessageDTO.getMessage());
+        chatService.saveMessage(chatMessageDTO.getRoomId(), chatMessageDTO.getSender(), chatMessageDTO.getMessage());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 //     세션 수 가져오기
@@ -51,13 +52,14 @@ public class ChatController {
 //     이전 메세지 가져오기
     @GetMapping("/message/{roomId}")
     public ResponseEntity<List<ChatMessageDto>> getRecentMessages(@PathVariable String roomId) {
-        List<ChatMessageDto> list = new ArrayList<>();
+        List<ChatMessageDto> list = new LinkedList<>();
         List<Chatting> chattingList= chatService.getRecentMessages(roomId);
         for (Chatting chat : chattingList) {
             ChatMessageDto dto = ChatMessageDto.builder()
                     .message(chat.getMessage())
-                    .roodId(chat.getChatRoom().getRoomId())
+                    .roomId(chat.getChatRoom().getRoomId())
                     .sender(chat.getSender().getNick())
+                    .sentAt(chat.getSentAt())
                     .build();
             list.add(dto);
         }

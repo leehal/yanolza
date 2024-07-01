@@ -40,12 +40,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
             log.warn("payload : {}", payload);
             // JSON 문자열을 ChatMessageDto 객체로 변환
             ChatMessageDto chatMessage = objectMapper.readValue(payload, ChatMessageDto.class);
-            log.warn("chatMessage : {}", chatMessage.getRoodId());
+            log.warn("chatMessage : {}", chatMessage.getRoomId());
             //payload를 ChatMessageDto 객체로 변환합니다. objectMapper의 readValue 메서드를 사용하여 JSON 문자열을 지정된 클래스의 객체로 변환
-            ChatRoomResDto chatRoom = chatService.findRoomById(chatMessage.getRoodId());
+            ChatRoomResDto chatRoom = chatService.findRoomById(chatMessage.getRoomId());
 //            log.warn("chatMessage : {}", chatMessage.getRoodId());
-            if (chatMessage.getRoodId() != null) {
-                sessionRoomIdMap.put(session, chatMessage.getRoodId()); // 세션과 채팅방 ID를 매핑
+            if (chatMessage.getRoomId() != null) {
+                sessionRoomIdMap.put(session, chatMessage.getRoomId()); // 세션과 채팅방 ID를 매핑
                 String roomId = chatRoom.getRoomId();
                 if (chatMessage.getType() == ChatMessageDto.MessageType.ENTER) { // 메시지 타입이 ENTER이면
                     chatService.addSessionAndHandleEnter(roomId, session, chatMessage); // 채팅방에 입장한 세션 추가

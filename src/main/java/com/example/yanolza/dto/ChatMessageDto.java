@@ -2,6 +2,8 @@ package com.example.yanolza.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,7 +14,8 @@ public class ChatMessageDto {
         ENTER, TALK, CLOSE;
     }
     private MessageType type;
-    private String roodId;
+    private String roomId;
     private String sender; // 유저 이름
     private String message;
+    private LocalDateTime sentAt;
 }

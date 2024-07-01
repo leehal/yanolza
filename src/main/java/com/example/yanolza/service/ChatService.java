@@ -76,13 +76,13 @@ public class ChatService {
     }
     public void removeRoom(String roomId) { // 방 삭제
         ChatRoomResDto room = chatRooms.get(roomId); // 방 정보 가져오기
-        if (room != null) { // 방이 존재하면
-            if (room.isSessionEmpty()) { // 방에 세션이 없으면
-                chatRooms.remove(roomId); // 방 삭제
-                // DB에서도 채팅방 삭제
-                chatRoomRepository.deleteById(roomId);
-            }
-        }
+//        if (room != null) { // 방이 존재하면
+//            if (room.isSessionEmpty()) { // 방에 세션이 없으면
+//                chatRooms.remove(roomId); // 방 삭제
+//                // DB에서도 채팅방 삭제
+//                chatRoomRepository.deleteById(roomId);
+//            }
+//        }
     }
     // 채팅방에 입장한 세션 추가
     public void addSessionAndHandleEnter(String roomId, WebSocketSession session, ChatMessageDto chatMessage) {
@@ -106,9 +106,9 @@ public class ChatService {
                 sendMessageToAll(roomId, chatMessage); // 채팅방에 퇴장 메시지 전송
             }
             log.debug("Session removed: " + session);
-            if (room.isSessionEmpty()) {
-                removeRoom(roomId);
-            }
+//            if (room.isSessionEmpty()) {
+//                removeRoom(roomId);
+//            }
         }
     }
 
@@ -149,6 +149,9 @@ public class ChatService {
     }
     // 이전 채팅 가져오기
     public List<Chatting> getRecentMessages(String roomId) {
-        return chattingRepository.findRecentMessages(roomId);
+//        return chattingRepository.findRecentMessages(roomId);
+        ChattingRoom chat = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("해당 채팅방이 존재하지 않습니다."));;
+        return chattingRepository.findByChatRoom(chat);
     }
 }
