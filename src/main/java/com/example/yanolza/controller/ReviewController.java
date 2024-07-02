@@ -1,6 +1,7 @@
 package com.example.yanolza.controller;
 
 
+import com.example.yanolza.dto.ImageDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.PartyNameListDto;
 import com.example.yanolza.dto.ReviewDto;

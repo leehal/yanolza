@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ReviewDto {
+    private Long rno;
     private String title;
     private int tno;
     private String tcategory;
@@ -27,9 +28,11 @@ public class ReviewDto {
     private int rate;
     private String rnick;
     private boolean identify;
+    private List<ImageDto> image;
 
-    public static ReviewDto of (Review review, Boolean identify) {
+    public static ReviewDto of (Review review,List<ImageDto>image, Boolean identify) {
         return ReviewDto.builder()
+                .rno(review.getRno())
                 .title(review.getTitle())
                 .tno(review.getTravel().getTno().intValue())
                 .tcategory(review.getTravel().getTcategory())
@@ -38,6 +41,7 @@ public class ReviewDto {
                 .rate(review.getRate())
                 .rnick(review.getRnick().getNick())
                 .identify(identify)
+                .image(image)
                 .build();
     }
 }

@@ -2,13 +2,13 @@ package com.example.yanolza.entity;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@Table
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +20,6 @@ public class Image {
     private Long ino;
     @ManyToOne
     @JoinColumn(name = "rno")
-    private Review rno;
+    private Review review;
     private String iimage;
 }
