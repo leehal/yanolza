@@ -1,17 +1,9 @@
 package com.example.yanolza.service;
 
-import com.example.yanolza.dto.CalendarDto;
-import com.example.yanolza.dto.MemberResDto;
-import com.example.yanolza.dto.PartyNameListDto;
-import com.example.yanolza.dto.PartyRequestDto;
+import com.example.yanolza.dto.*;
+import com.example.yanolza.entity.*;
 import com.example.yanolza.entity.Calendar;
-import com.example.yanolza.entity.Member;
-import com.example.yanolza.entity.Party;
-import com.example.yanolza.entity.PartyPeople;
-import com.example.yanolza.repository.CalendarRepository;
-import com.example.yanolza.repository.MemberRepository;
-import com.example.yanolza.repository.PartyPeopleReRepository;
-import com.example.yanolza.repository.PartyRepository;
+import com.example.yanolza.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,9 +12,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -34,6 +24,8 @@ public class PartyService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final CalendarRepository calendarRepository;
+    private final DibsRepository dibsRepository;
+    private final TravelRepository travelRepository;
 
     //    party save
     public boolean partyInsert(PartyRequestDto reqDto) {
@@ -86,11 +78,18 @@ public class PartyService {
     }
 
     //    Pno에 따른 멤버 리스트 조회
-    public List<String> partyMemberList(Long pno) {
-        List<String> list = new ArrayList<>();
+    public List<MemberResDto> partyMemberList(Long pno) {
+        List<MemberResDto> list = new ArrayList<>();
         Optional<Party> party = partyRepository.findById(pno);
         if (party.isPresent()) {
-            list.add(party.get().getPname());
+            List<PartyPeople> partyPeople = partyPeopleReRepository.findByPartyPeoplePno(party.get());
+            for (PartyPeople p : partyPeople) {
+                Optional<Member> member = memberRepository.findById(p.getPartyPeopleNick().getUno());
+                if (member.isPresent()) {
+                    MemberResDto dto = MemberResDto.of(member.get());
+                    list.add(dto);
+                }
+            }
         }
         return list;
     }
@@ -115,29 +114,32 @@ public class PartyService {
     }
 
     //    calendar insert
-    public boolean calendarInsert(CalendarDto calendarDto) {
+    public boolean calendarInsert(CalendarSaveDto calendarDtos) {
         boolean isTrue = false;
-        Optional<Party> party = partyRepository.findById(calendarDto.getCalenderPno());
+        Optional<Party> party = partyRepository.findById(calendarDtos.getPno());
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //        LocalDateTime dateTime = LocalDate.parse(calendarDto.getCaDate(), formatter).atStartOfDay();
-        Optional<Member> member = memberRepository.findByNick(calendarDto.getCalenderNick());
+        Optional<Member> member = memberRepository.findByNick(calendarDtos.getNick());
 
         if (party.isPresent()) {
 
             if (member.isPresent()) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDateTime dateTime = LocalDate.parse(calendarDto.getCaDate(), formatter).atStartOfDay();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREAN);
+                LocalDateTime dateTime = LocalDate.parse(calendarDtos.getDate(), formatter).atStartOfDay();
 
-                Calendar calendar = calendarRepository.save(
-                        Calendar.builder()
-                                .calenderPno(party.get())
-                                .caContent(calendarDto.getCaContent())
-                                .calenderNick(member.get())
-                                .caDate(dateTime)
-                                .build()
-                );
-                calendarRepository.save(calendar);
-                isTrue = true;
+                for (CalendarDto dto : calendarDtos.getDtos()) {
+                    Calendar calendar = calendarRepository.save(
+                            Calendar.builder()
+                                    .caddr(dto.getCaddr())
+                                    .calenderPno(party.get())
+                                    .caContent(dto.getCaContent())
+                                    .calenderNick(member.get())
+                                    .caDate(dateTime)
+                                    .build()
+                    );
+                    calendarRepository.save(calendar);
+                    isTrue = true;
+                }
             }
         }
         return isTrue;
@@ -165,6 +167,22 @@ public class PartyService {
             for (Calendar c : calendars) {
                 CalendarDto dto = CalendarDto.of(c);
                 list.add(dto);
+            }
+        }
+        return list;
+    }
+
+    public List<TravelDto> membersDibsList(List<MemberResDto> memList) {
+        List<TravelDto> list = new ArrayList<>();
+        for (MemberResDto dto : memList) {
+            Optional<Member> member = memberRepository.findByNick(dto.getNick());
+            if (member.isPresent()) {
+                List<Dibs> dibs = dibsRepository.findByDnick(member.get());
+                for (Dibs dib : dibs) {
+                    Travel travel = travelRepository.findByTno(dib.getTno())
+                            .orElseThrow(() -> new NoSuchElementException(dib.getTno() + "에대해 찾을수 없음"));
+                    list.add(TravelDto.of(travel));
+                }
             }
         }
         return list;
