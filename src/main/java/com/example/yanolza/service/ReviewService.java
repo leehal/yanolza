@@ -50,19 +50,23 @@ public class ReviewService {
         return list;
     }
 
-    public boolean updateReview(List<ReviewDto> dtos) {
+    public boolean updateReview(ReviewDto dto) {
+        Member member = memberService.memberIdFindMember();
+        Long tno = (long)dto.getTno();
+        Travel travel = travelRepository.findById(tno).orElseThrow(
+                () -> new RuntimeException("해당 여행지가 존재하지 않습니다."));
         boolean isTrue = false;
-        for (ReviewDto dto : dtos) {
             Review review = Review.builder()
                     .rno(dto.getRno())
                     .rdate(LocalDateTime.now()) // 수정하면 수정한 시간으로 시간 바뀌나요??
                     .title(dto.getTitle())
                     .rcontent(dto.getRcontent())
                     .rate(dto.getRate())
+                    .rnick(member)
+                    .travel(travel)
                     .build();
             reviewRepository.save(review);
             isTrue = true;
-        }
         return isTrue;
     }
 

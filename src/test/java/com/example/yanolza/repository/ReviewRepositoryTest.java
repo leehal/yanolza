@@ -66,4 +66,27 @@ class ReviewRepositoryTest {
         createReview(4, 52, "그냥 그저 그랬어요","그냥",3);
         createReview(4, 52, "할인해줘서 남기는 후기","후기 남기면",5);
     }
+
+    @Test
+    @DisplayName("리뷰 수정 테스트")
+    public void update() {
+        Long no = (long) 64;
+        Long tno = (long) 4;
+        Long uno = (long) 52;
+        Optional<Travel> travel = travelRepository.findById(tno);
+        Optional<Member> member = memberRepository.findById(uno);
+
+
+        Review review = Review.builder()
+                .rno(no)
+                .rate(2)
+                .rcontent("Junit테스트 확인용")
+                .title("Junit 테스트입니다.")
+                .rdate(LocalDateTime.now())
+                .rnick(member.get())
+                .travel(travel.get())
+                .build();
+        reviewRepository.save(review);
+
+    }
 }

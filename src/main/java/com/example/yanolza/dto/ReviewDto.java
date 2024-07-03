@@ -25,7 +25,7 @@ public class ReviewDto {
     private String rcategory;
     private String rcontent;
     private LocalDateTime rdate;
-    private int rate;
+    private String rate;
     private String rnick;
     private boolean identify;
     private List<ImageDto> image;

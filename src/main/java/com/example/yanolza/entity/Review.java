@@ -30,7 +30,7 @@ public class Review {
     @Column(nullable = false)
     private LocalDateTime rdate;
     @Column(nullable = false)
-    private int rate;
+    private String rate;
     @ManyToOne
     @JoinColumn(name = "nick")
     private Member rnick;

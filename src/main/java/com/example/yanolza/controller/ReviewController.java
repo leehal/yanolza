@@ -41,6 +41,10 @@ public class ReviewController {
         boolean result = reviewService.reviewDelete(id);
         return ResponseEntity.ok(result);
     }
+    @PostMapping("/update")
+    public ResponseEntity reviewUpdate(@RequestBody ReviewDto review) {
+        return ResponseEntity.ok(reviewService.updateReview(review));
+    }
 }
 
 
