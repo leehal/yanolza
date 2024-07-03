@@ -10,12 +10,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FriendDto {
+    Long fno;
     String from;
     String to;
     String accept;
 
     public static FriendDto of(Friend friend){
         return FriendDto.builder()
+                .fno(friend.getFno())
                 .from(friend.getFrom().getNick())
                 .to(friend.getTo().getNick())
                 .accept(friend.getAccept().toString())

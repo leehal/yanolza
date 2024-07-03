@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
     Optional<Member> findByEmail(String email); //optional null 방지
-    Optional<Member> findByMid(String email); //optional null 방지
-    Optional<Member> findByNick(String email); //optional null 방지
+    Optional<Member> findByMid(String mid); //optional null 방지
+    Optional<Member> findByNick(String nick); //optional null 방지
     @Query(value = "SELECT * FROM member WHERE mid != :id", nativeQuery = true)
     List<Member> findAllExceptMine(@Param("id") String id);
     Optional<Member> findByEmailAndPwd(String email, String pwd);
