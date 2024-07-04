@@ -48,8 +48,13 @@ public class PartyController {
 
     // pno에 해당하는 calendar 보여주기
     @GetMapping("/calendar")
-    public ResponseEntity<List<CalendarDto>> pnoCalendar(@RequestParam("pno") int pno){
-        List<CalendarDto> list = partyService.selectCalendarPnoAll(pno);
+    public ResponseEntity<List<String >> pnoCalendar(@RequestParam("pno") Long pno){
+        List<String > list = partyService.selectCalendarPnoAll(pno);
+        return ResponseEntity.ok(list);
+    }
+    @GetMapping("/calendarOne/{pno}/{date}")
+    public ResponseEntity<List<CalendarDto>> calendarOneDay(@PathVariable("pno")Long pno, @PathVariable("date") String date){
+        List<CalendarDto> list = partyService.selectPnoCalendarOneDay(pno,date);
         return ResponseEntity.ok(list);
     }
 

@@ -158,14 +158,36 @@ public class PartyService {
     }
 
     //    모임에 따른 일정 전체 조회
-    public List<CalendarDto> selectCalendarPnoAll(int pno) {
-        List<CalendarDto> list = new ArrayList<>();
-        Long pno1 = (long) pno;
-        Optional<Party> party = partyRepository.findById(pno1);
+    public List<String> selectCalendarPnoAll(Long pno) {
+        List<String> dateList = new ArrayList<>();
+        Optional<Party> party = partyRepository.findById(pno);
+
         if (party.isPresent()) {
             List<Calendar> calendars = calendarRepository.findByCalenderPno(party.get());
+
             for (Calendar c : calendars) {
                 CalendarDto dto = CalendarDto.of(c);
+                dateList.add(dto.getCaDate()); // CalendarDto에서 caDate만 추출해 추가
+            }
+        }
+
+        // 중복 제거를 위해 Set으로 변환 후 다시 List로 변환
+        Set<String> dateSet = new HashSet<>(dateList); // 중복 제거
+        dateList = new ArrayList<>(dateSet); // Set을 List로 변환
+
+        return dateList;
+    }
+
+    public List<CalendarDto> selectPnoCalendarOneDay(Long pno, String date) {
+        List<CalendarDto> list = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREAN);
+        LocalDateTime dateTime = LocalDate.parse(date, formatter).atStartOfDay();
+
+        Optional<Party> party = partyRepository.findById(pno);
+        if(party.isPresent()){
+            List<Calendar> calendars = calendarRepository.findByCaDateAndCalenderPno(dateTime,party.get());
+            for (Calendar calendar : calendars) {
+                CalendarDto dto = CalendarDto.of(calendar);
                 list.add(dto);
             }
         }
