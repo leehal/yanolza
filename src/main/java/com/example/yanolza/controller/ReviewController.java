@@ -5,11 +5,13 @@ import com.example.yanolza.dto.ImageDto;
 import com.example.yanolza.dto.MemberResDto;
 import com.example.yanolza.dto.PartyNameListDto;
 import com.example.yanolza.dto.ReviewDto;
+import com.example.yanolza.entity.Image;
 import com.example.yanolza.entity.Member;
 import com.example.yanolza.entity.Review;
 import com.example.yanolza.entity.Travel;
 import com.example.yanolza.service.MemberService;
 import com.example.yanolza.service.ReviewService;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,10 @@ public class ReviewController {
     public ResponseEntity<Boolean> createReview(@RequestBody ReviewDto review) {
         return ResponseEntity.ok(reviewService.saveReview(review));
     }
+    @PostMapping("/saveimage")
+    public ResponseEntity<Boolean> createImage(@RequestBody ImageDto image){
+        return ResponseEntity.ok(reviewService.saveImage(image));
+    }
 
     @PostMapping("/delete/{id}")
     public ResponseEntity<Boolean> reviewDelete(@PathVariable Long id) {
@@ -44,6 +50,11 @@ public class ReviewController {
     @PostMapping("/update")
     public ResponseEntity reviewUpdate(@RequestBody ReviewDto review) {
         return ResponseEntity.ok(reviewService.updateReview(review));
+    }
+    @PostMapping("/deleteimage/{id}")
+    public ResponseEntity<Boolean> imageDelete(@PathVariable Long id) {
+        boolean result = reviewService.imageDelete(id);
+        return ResponseEntity.ok(result);
     }
 }
 

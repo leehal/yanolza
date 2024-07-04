@@ -8,6 +8,7 @@ import com.example.yanolza.entity.Image;
 import com.example.yanolza.entity.Member;
 import com.example.yanolza.entity.Review;
 import com.example.yanolza.entity.Travel;
+import com.example.yanolza.entity.Image;
 import com.example.yanolza.repository.ImageRepository;
 import com.example.yanolza.repository.MemberRepository;
 import com.example.yanolza.repository.ReviewRepository;
@@ -40,7 +41,7 @@ public class ReviewService {
         List<ReviewDto> list = new ArrayList<>();
         List<Review> reviewList = reviewRepository.findByTravel_Tno(tno);
         for (Review e : reviewList) {
-            List<Image> imageList = imageRepository.findByReview_Rno(e.getRno());
+            List<Image> imageList = imageRepository.findByRno(e.getRno());
             List<ImageDto> imgList = new ArrayList<>();
             for (Image image : imageList) {
                 imgList.add(ImageDto.of(image));
@@ -78,7 +79,7 @@ public class ReviewService {
                 Image image = Image.builder()
                         .ino(img.getIno())
                         .iimage(img.getImage())
-                        .review(reImg.get())
+                        .rno(reImg.get().getRno())
                         .build();
                 imageRepository.save(image);
             isTrue = true;
@@ -91,7 +92,7 @@ public class ReviewService {
 //    }
 
 
-
+    // 리뷰 생성
     public boolean saveReview(ReviewDto reviewDto) {
         boolean isTrue = false;
         Member member = memberService.memberIdFindMember();
@@ -114,13 +115,36 @@ public class ReviewService {
         return isTrue;
     }
 
-    // 댓글 삭제
+    public boolean saveImage(ImageDto imageDto) {
+        boolean isTrue = false;
+        List<Image> image = imageRepository.findByRno(imageDto.getRno());
+        image.add(imageDto.toEntity());
+        imageRepository.save(image.get(0));
+            isTrue = true;
+
+        return isTrue;
+    }
+
+    // 리뷰 삭제
     public boolean reviewDelete(Long id) {
         try {
             Review review = reviewRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 댓글이 존재하지 않습니다.")
             );
             reviewRepository.delete(review);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+    public boolean imageDelete(Long id) {
+        try {
+            Image image = imageRepository.findById(id).orElseThrow(
+                    () -> new RuntimeException("해당 이미지가 존재하지 않습니다.")
+            );
+            imageRepository.delete(image);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

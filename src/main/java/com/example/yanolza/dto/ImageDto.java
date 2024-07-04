@@ -2,6 +2,7 @@ package com.example.yanolza.dto;
 
 
 import com.example.yanolza.entity.Image;
+import com.example.yanolza.entity.Review;
 import lombok.*;
 
 import java.security.PrivateKey;
@@ -13,14 +14,21 @@ import java.security.PrivateKey;
 @RequiredArgsConstructor
 public class ImageDto {
     private Long ino;
-    private int rno;
+    private Long rno;
     private String image;
 
     public static ImageDto of (Image image) {
         return ImageDto.builder()
                 .ino(image.getIno())
-                .rno(image.getReview().getRno().intValue())
+                .rno(image.getRno())
                 .image(image.getIimage())
+                .build();
+    }
+
+    public Image toEntity (){
+        return Image.builder()
+                .iimage(getImage())
+                .rno(getRno())
                 .build();
     }
 }

@@ -18,8 +18,6 @@ public class Image {
     @Column(name = "ino")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ino;
-    @ManyToOne
-    @JoinColumn(name = "rno")
-    private Review review;
+    private Long rno;
     private String iimage;
 }
