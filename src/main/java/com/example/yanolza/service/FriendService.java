@@ -49,11 +49,11 @@ public class FriendService {
         List<Friend> to = friendRepository.findByToAndAccept(member, TF.TRUE);
 
         for (Friend friend : from) {
-            FriendDto fnd = FriendDto.of(friend);
+            FriendDto fnd = FriendDto.of(friend,TF.TRUE);
             list.add(fnd);
         }
         for (Friend friend : to) {
-            FriendDto fnd = FriendDto.of(friend);
+            FriendDto fnd = FriendDto.of(friend,TF.FALSE);
             list.add(fnd);
         }
         return list;
@@ -66,7 +66,7 @@ public class FriendService {
         List<Friend> from = friendRepository.findByFromAndAccept(member, TF.FALSE);
 
         for (Friend friend : from) {
-            FriendDto fnd = FriendDto.of(friend);
+            FriendDto fnd = FriendDto.of(friend,TF.TRUE);
             list.add(fnd);
         }
         return list;
@@ -79,7 +79,7 @@ public class FriendService {
         List<Friend> to = friendRepository.findByToAndAccept(member, TF.FALSE);
         if (!to.isEmpty()) {
             for (Friend friend : to) {
-                FriendDto fnd = FriendDto.of(friend);
+                FriendDto fnd = FriendDto.of(friend,TF.FALSE);
                 list.add(fnd);
             }
         }

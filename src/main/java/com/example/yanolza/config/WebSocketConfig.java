@@ -21,6 +21,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 //    registry.addHandler(webSocketHandler, "ws/chat"): webSocketHandler를 "ws/chat" 경로에 등록합니다. 이 경로는 클라이언트가 WebSocket 연결을 시도할 때 사용됩니다.
         registry.addHandler(webSocketHandler, "ws/chat").setAllowedOrigins("*");
+//        registry.addHandler()
 //    .setAllowedOrigins("*"): 모든 오리진에서의 접근을 허용합니다. 이 부분을 특정 도메인이나 URL 패턴으로 설정할 수도 있습니다.
     } // 이 설정을 통해 클라이언트는 "ws://도메인주소/ws/chat" 경로를 통해 WebSocket 연결을 시도할 수 있으며, 이 연결은 webSocketHandler에서 처리될 것입니다.
 
