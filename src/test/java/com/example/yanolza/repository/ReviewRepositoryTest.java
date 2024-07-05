@@ -34,7 +34,7 @@ class ReviewRepositoryTest {
 
     @Test
     @DisplayName("save 실험")
-    public void createReview(int tno, int uno, String content, String title, int trate) {
+    public void createReview(int tno, int uno, String content, String title, String  rate) {
         Long tno1 = (long) tno;
         Long uno1 = (long) uno;
         Optional<Member> member = memberRepository.findById(uno1);
@@ -44,7 +44,7 @@ class ReviewRepositoryTest {
         if(member.isPresent()){
 
         Review review = Review.builder()
-                .rate(trate)
+                .rate(rate)
                 .rcontent(content)
                 .rdate(LocalDateTime.now())
                 .title(title)
@@ -59,12 +59,13 @@ class ReviewRepositoryTest {
 
     @Test
     public void saves(){
-        createReview(4, 52, "전망이 너무 좋아요 다시 오고 싶어요 추천합니다!","전망 최고",5);
-        createReview(4, 52, "오랜만에 여행이라 설레는 맘으로 기대하고 갔는데 볼 것도 없고 너무 별로에요 최악이에요","최악의 여행지",1);
-        createReview(4, 52, "후기 보고 걱정스러운 마음이었는데, 막상 가보니 정말 좋았어요 후기 다신 분이 예민한듯요!! 저는 너무 좋았어요!","감사합니다!!",5);
-        createReview(4, 52, "기대 없이 갔는데 좋았어요","짱",5);
-        createReview(4, 52, "그냥 그저 그랬어요","그냥",3);
-        createReview(4, 52, "할인해줘서 남기는 후기","후기 남기면",5);
+        createReview(27, 1, "전망이 너무 좋아요 다시 오고 싶어요 추천합니다!","전망 최고","5");
+        createReview(27, 1, "오랜만에 여행이라 설레는 맘으로 기대하고 갔는데 볼 것도 없고 너무 별로에요 최악이에요","최악의 여행지","1");
+        createReview(27, 5, "후기 보고 걱정스러운 마음이었는데, 막상 가보니 정말 좋았어요 후기 다신 분이 예민한듯요!! 저는 너무 좋았어요!","감사합니다!!","5");
+        createReview(27, 5, "기대 없이 갔는데 좋았어요","짱","5");
+        createReview(27, 5, "그냥 그저 그랬어요","그냥","3");
+        createReview(27, 3, "할인해줘서 남기는 후기","후기 남기면","5");
+        createReview(27, 3, "안녕하세요 반갑습니다 저는 여기를 다녀왔지만 만족을 불했습니다.","만족불","1");
     }
 
     @Test
@@ -79,7 +80,7 @@ class ReviewRepositoryTest {
 
         Review review = Review.builder()
                 .rno(no)
-                .rate(2)
+                .rate("2")
                 .rcontent("Junit테스트 확인용")
                 .title("Junit 테스트입니다.")
                 .rdate(LocalDateTime.now())
