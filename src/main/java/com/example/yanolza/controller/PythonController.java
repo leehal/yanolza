@@ -18,7 +18,7 @@ public class PythonController {
     private final TravelService travelService;
 
     @PostMapping("/travel")
-    public ResponseEntity<Boolean> travelAoi(@RequestBody List<TravelDto> data) {
+    public ResponseEntity<Boolean> travelApi(@RequestBody List<TravelDto> data) {
         boolean isTrue = false;
         for (TravelDto datum : data)
             isTrue = travelService.travelInsert(datum);
