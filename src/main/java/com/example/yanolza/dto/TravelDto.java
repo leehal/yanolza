@@ -15,15 +15,14 @@ public class TravelDto {
     private String tname;
     private String taddr;
     private boolean book;
-    private int tprice;
-    private String timage;
     private String tcategory; // 분류
+    private String timage;
+    private String tprice;
     private String course;
     private String phone;
     private String homepage;
     private String main; // 대표 메뉴
-    private String vehicle; // 교통수단
-    private String park; // 주차
+    private String vehicle; // 교통수단, 주차
     private LocalDateTime sdate; // 시작일
     private LocalDateTime edate; // 종료일
     private String time; // 시작 & 종료 시간, 시대, 입퇴실
@@ -35,12 +34,20 @@ public class TravelDto {
                 .tno(travel.getTno())
                 .tname(travel.getTname())
                 .taddr(travel.getTaddr())
+                .tcategory(travel.getTcategory())
+                .timage(travel.getTimage())
                 .book(travel.isBook())
                 .tprice(travel.getTprice())
-                .info(travel.getInfo())
                 .course(travel.getCourse())
                 .guide(travel.getGuide())
-                .timage(travel.getTimage())
+                .info(travel.getInfo())
+                .homepage(travel.getHomepage())
+                .main(travel.getMain())
+                .phone(travel.getPhone())
+                .vehicle(travel.getVehicle())
+                .sdate(travel.getSdate())
+                .edate(travel.getEdate())
+                .time(travel.getTime())
                 .build();
     }
 }

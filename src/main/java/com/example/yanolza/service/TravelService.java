@@ -19,14 +19,29 @@ public class TravelService {
     private final TravelRepository travelRepository;
 
     // save
-    public void travelInsert(TravelDto travelDto) {
+    public boolean travelInsert(TravelDto travelDto) {
+        boolean isTrue = false;
         Travel travel = Travel.builder()
                 .tname(travelDto.getTname())
                 .taddr(travelDto.getTaddr())
+                .tcategory(travelDto.getTcategory())
+                .timage(travelDto.getTimage())
+                .tprice(travelDto.getTprice()) // 5개
                 .book(travelDto.isBook())
-                .tprice(travelDto.getTprice())
+                .course(travelDto.getCourse())
+                .homepage(travelDto.getHomepage())
+                .guide(travelDto.getGuide())
+                .info(travelDto.getInfo()) // 10개
+                .main(travelDto.getMain())
+                .phone(travelDto.getPhone())
+                .edate(travelDto.getEdate())
+                .sdate(travelDto.getSdate())
+                .vehicle(travelDto.getVehicle()) // 15개
+                .time(travelDto.getTime())
                 .build();
         travelRepository.save(travel);
+        isTrue = true;
+        return isTrue;
     }
 
     // 모든 여행 전체 조회
