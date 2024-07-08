@@ -75,4 +75,13 @@ public class PartyController {
     public ResponseEntity<List<TravelDto>> pMemberDibsList(@RequestBody PmemberDibsReqDto dtos){
         return ResponseEntity.ok(partyService.membersDibsList(dtos.getMemberResDtos()));
     }
+    // pname update
+    @PostMapping("pnameup/{pno}/{pname}")
+    public ResponseEntity<Boolean> pnameUpdateOne(@PathVariable("pno") Long pno, @PathVariable("pname") String  pname){
+        return ResponseEntity.ok(partyService.pnameUpdate(pno,pname));
+    }
+    @PostMapping("/cosup")
+    public ResponseEntity<Boolean> cosUpDate(@RequestBody CalendarDto calendarDto){
+        return ResponseEntity.ok(partyService.cosUpdate(calendarDto));
+    }
 }
