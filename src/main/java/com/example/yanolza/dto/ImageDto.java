@@ -27,8 +27,8 @@ public class ImageDto {
 
     public Image toEntity (){
         return Image.builder()
-                .iimage(getImage())
-                .rno(getRno())
+                .iimage(this.image)
+                .rno(this.rno)
                 .build();
     }
 }

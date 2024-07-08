@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class ReviewService {
     private final ImageRepository imageRepository;
     private final MemberRepository memberRepository;
 
+
     //tno가 같은 review 리스트 보여주기
     public List<ReviewDto> findByTno(Long tno) {
         Member member = memberService.memberIdFindMember();
@@ -52,6 +55,7 @@ public class ReviewService {
     }
 
     public boolean updateReview(ReviewDto dto) {
+        log.warn("updateReview 실행! ! !");
         Member member = memberService.memberIdFindMember();
         Long tno = (long)dto.getTno();
         Travel travel = travelRepository.findById(tno).orElseThrow(
@@ -67,6 +71,7 @@ public class ReviewService {
                     .travel(travel)
                     .build();
             reviewRepository.save(review);
+            saveImage(dto);
             isTrue = true;
         return isTrue;
     }
@@ -95,9 +100,12 @@ public class ReviewService {
     // 리뷰 생성
     public boolean saveReview(ReviewDto reviewDto) {
         boolean isTrue = false;
+        List<ImageDto> image = reviewDto.getImage();
+        log.warn("img : {}", image.toString());
         Member member = memberService.memberIdFindMember();
         Long tno = (long) reviewDto.getTno();
         Optional<Travel> travel = travelRepository.findById(tno);
+        List<Image> images = new ArrayList<>();
         if (travel.isPresent()) {
             Review review = Review.builder()
                     .title(reviewDto.getTitle())
@@ -108,6 +116,13 @@ public class ReviewService {
                     .rnick(member)
                     .build();
             reviewRepository.save(review);
+            log.warn("review의 rno : {} ", review.getRno() );
+            for(ImageDto i : image){
+                i.setRno(review.getRno());
+                Image imageEntity = i.toEntity();
+                images.add(imageEntity);
+            }
+            imageRepository.saveAll(images);
             isTrue = true;
         } else {
             isTrue = false;
@@ -115,11 +130,17 @@ public class ReviewService {
         return isTrue;
     }
 
-    public boolean saveImage(ImageDto imageDto) {
+    public boolean saveImage(ReviewDto reviewDto) {
         boolean isTrue = false;
-        List<Image> image = imageRepository.findByRno(imageDto.getRno());
-        image.add(imageDto.toEntity());
-        imageRepository.save(image.get(0));
+        List<ImageDto> images = reviewDto.getImage();
+        for (ImageDto imageDto : images) {
+            imageRepository.save(
+                    Image.builder()
+                            .rno(reviewDto.getRno())
+                            .iimage(imageDto.getImage())
+                            .build()
+            );
+        }
             isTrue = true;
 
         return isTrue;
@@ -145,6 +166,20 @@ public class ReviewService {
                     () -> new RuntimeException("해당 이미지가 존재하지 않습니다.")
             );
             imageRepository.delete(image);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateOneImg(Long ino, String img){
+        try {
+            Image image = imageRepository.findById(ino).orElseThrow(
+                    () -> new RuntimeException("해당 이미지가 존재하지 않습니다.")
+            );
+            image.setIimage(img);
+            imageRepository.save(image);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

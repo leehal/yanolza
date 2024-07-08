@@ -36,11 +36,13 @@ public class ReviewController {
     @PostMapping("/reviewlist")
     public ResponseEntity<Boolean> createReview(@RequestBody ReviewDto review) {
         return ResponseEntity.ok(reviewService.saveReview(review));
+
     }
     @PostMapping("/saveimage")
-    public ResponseEntity<Boolean> createImage(@RequestBody ImageDto image){
+    public ResponseEntity<Boolean> createImage(@RequestBody ReviewDto image){
         return ResponseEntity.ok(reviewService.saveImage(image));
     }
+
 
     @PostMapping("/delete/{id}")
     public ResponseEntity<Boolean> reviewDelete(@PathVariable Long id) {
@@ -48,13 +50,19 @@ public class ReviewController {
         return ResponseEntity.ok(result);
     }
     @PostMapping("/update")
-    public ResponseEntity reviewUpdate(@RequestBody ReviewDto review) {
+    public ResponseEntity<Boolean> reviewUpdate(@RequestBody ReviewDto review) {
+        //reviewService.saveImage(review);
         return ResponseEntity.ok(reviewService.updateReview(review));
     }
+
     @PostMapping("/deleteimage/{id}")
     public ResponseEntity<Boolean> imageDelete(@PathVariable Long id) {
         boolean result = reviewService.imageDelete(id);
         return ResponseEntity.ok(result);
+    }
+    @PostMapping("/upimgOne")
+    public ResponseEntity<Boolean> imgOneUpdate(@RequestBody ImageDto imageDto){
+        return ResponseEntity.ok(reviewService.updateOneImg(imageDto.getIno(), imageDto.getImage()));
     }
 }
 
