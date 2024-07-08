@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @Builder
 public class CalendarDto {
+    private Long cano;
     private String caDate;
     private String caContent;
     private String calenderNick;
@@ -28,6 +29,7 @@ public class CalendarDto {
         String date = dateTime.format(formatter);
 
         return CalendarDto.builder()
+                .cano(calendar.getCano())
                 .caDate(date)
                 .caContent(calendar.getCaContent())
                 .calenderNick(calendar.getCalenderNick().getNick())

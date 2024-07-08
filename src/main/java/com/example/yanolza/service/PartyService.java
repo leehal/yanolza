@@ -209,4 +209,38 @@ public class PartyService {
         }
         return list;
     }
+
+    public boolean pnameUpdate(Long pno, String pname){
+        boolean isTrue= false;
+        Optional<Party> oriParty = partyRepository.findById(pno);
+        if (oriParty.isPresent()){
+            Party party = Party.builder()
+                    .pno(pno)
+                    .pname(pname)
+                    .pdate(oriParty.get().getPdate())
+                    .build();
+            partyRepository.save(party);
+            isTrue = true;
+        }
+        return isTrue;
+    }
+
+    public boolean cosUpdate(CalendarDto dto){
+        boolean isTrue= false;
+        Optional<Calendar> oriCalendar = calendarRepository.findById(dto.getCano());
+        if (oriCalendar.isPresent()){
+            Member member = memberService.memberIdFindMember();
+            Calendar calendar = Calendar.builder()
+                    .cano(dto.getCano())
+                    .caddr(dto.getCaddr())
+                    .caDate(oriCalendar.get().getCaDate())
+                    .calenderPno(oriCalendar.get().getCalenderPno())
+                    .caContent(dto.getCaContent())
+                    .calenderNick(member)
+                    .build();
+            calendarRepository.save(calendar);
+            isTrue = true;
+        }
+        return isTrue;
+    }
 }
