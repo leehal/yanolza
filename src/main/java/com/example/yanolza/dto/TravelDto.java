@@ -3,7 +3,9 @@ package com.example.yanolza.dto;
 import com.example.yanolza.entity.Travel;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import javax.persistence.ElementCollection;
+import javax.persistence.FetchType;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,8 +25,7 @@ public class TravelDto {
     private String homepage;
     private String main; // 대표 메뉴
     private String vehicle; // 교통수단, 주차
-    private LocalDateTime sdate; // 시작일
-    private LocalDateTime edate; // 종료일
+    private String season; // 기간
     private String time; // 시작 & 종료 시간, 시대, 입퇴실
     private String guide;
     private String info;
@@ -45,8 +46,7 @@ public class TravelDto {
                 .main(travel.getMain())
                 .phone(travel.getPhone())
                 .vehicle(travel.getVehicle())
-                .sdate(travel.getSdate())
-                .edate(travel.getEdate())
+                .season(travel.getSeason())
                 .time(travel.getTime())
                 .build();
     }

@@ -34,10 +34,9 @@ public class TravelService {
                 .info(travelDto.getInfo()) // 10개
                 .main(travelDto.getMain())
                 .phone(travelDto.getPhone())
-                .edate(travelDto.getEdate())
-                .sdate(travelDto.getSdate())
-                .vehicle(travelDto.getVehicle()) // 15개
-                .time(travelDto.getTime())
+                .season(travelDto.getSeason())
+                .vehicle(travelDto.getVehicle())
+                .time(travelDto.getTime()) // 15개
                 .build();
         travelRepository.save(travel);
         isTrue = true;

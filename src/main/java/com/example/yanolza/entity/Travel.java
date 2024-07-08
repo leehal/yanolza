@@ -3,7 +3,6 @@ package com.example.yanolza.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "travel")
@@ -31,8 +30,7 @@ public class Travel {
     private String homepage;
     private String main; // 대표 메뉴
     private String vehicle; // 교통수단, 주차
-    private LocalDateTime sdate; // 시작일
-    private LocalDateTime edate; // 종료일
+    private String season; // 기간
     private String time; // 시작 & 종료 시간, 시대, 입퇴실
     private String guide;
     private String info;
