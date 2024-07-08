@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -234,6 +235,22 @@ class PartyPeopleReRepositoryTest {
             for (Calendar calendar : list) {
                 log.info("결과 : "+ calendar);
             }
+        }
+    }
+    @Test
+    @DisplayName("캘린더 삭제")
+    public void deleteCalendar(){
+        createCalendar();
+        List<Calendar> calendarList = calendarRepository.findAll();
+        List<Long> canoList = new ArrayList<>();
+        for (Calendar c : calendarList) {
+            canoList.add(c.getCano());
+            log.info("cano는 "+c.getCano());
+        }
+        calendarRepository.deleteById(canoList.get(0));
+        List<Calendar> newList = calendarRepository.findAll();
+        for (Calendar calendar : newList) {
+            log.info("결과로 남은 cano는 "+calendar.getCano());
         }
     }
 

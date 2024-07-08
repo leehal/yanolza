@@ -243,4 +243,30 @@ public class PartyService {
         }
         return isTrue;
     }
+
+    public boolean cosOneInsert(CalendarDto dto){
+        boolean isTrue= false;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREAN);
+        LocalDateTime dateTime = LocalDate.parse(dto.getCaDate(), formatter).atStartOfDay();
+        Optional<Party> party = partyRepository.findById(dto.getCalenderPno());
+        if (party.isPresent()) {
+            Member member = memberService.memberIdFindMember();
+            Calendar calendar = Calendar.builder()
+                    .caddr(dto.getCaddr())
+                    .caDate(dateTime)
+                    .calenderPno(party.get())
+                    .caContent(dto.getCaContent())
+                    .calenderNick(member)
+                    .build();
+            calendarRepository.save(calendar);
+            isTrue = true;
+        }
+        return isTrue;
+    }
+    public boolean cosOneDelete(Long cano){
+        boolean isTrue = false;
+        calendarRepository.deleteById(cano);
+        isTrue = true;
+        return isTrue;
+    }
 }

@@ -84,4 +84,12 @@ public class PartyController {
     public ResponseEntity<Boolean> cosUpDate(@RequestBody CalendarDto calendarDto){
         return ResponseEntity.ok(partyService.cosUpdate(calendarDto));
     }
+    @PostMapping("/onesave")
+    public ResponseEntity<Boolean> cosSaveOne(@RequestBody CalendarDto calendarDto){
+        return ResponseEntity.ok(partyService.cosOneInsert(calendarDto));
+    }
+    @PostMapping("cosdelete/{cano}")
+    public ResponseEntity<Boolean> cosDelete(@PathVariable("cano") Long cano){
+        return ResponseEntity.ok(partyService.cosOneDelete(cano));
+    }
 }
