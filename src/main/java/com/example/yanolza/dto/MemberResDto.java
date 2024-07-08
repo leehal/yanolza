@@ -1,5 +1,6 @@
 package com.example.yanolza.dto;
 
+import com.example.yanolza.constant.Social;
 import com.example.yanolza.entity.Member;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class MemberResDto {
     private String email;
     private String mid;
     private String image;
+    private Social social;
     
     public static MemberResDto of (Member member){
         return MemberResDto.builder()
@@ -22,6 +24,7 @@ public class MemberResDto {
                 .nick(member.getNick())
                 .email(member.getEmail())
                 .image(member.getImage())
+                .social(member.getSocial())
                 .build();
     }
 }

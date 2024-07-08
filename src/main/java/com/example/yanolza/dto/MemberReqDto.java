@@ -1,5 +1,6 @@
 package com.example.yanolza.dto;
 import com.example.yanolza.constant.Authority;
+import com.example.yanolza.constant.Social;
 import com.example.yanolza.entity.Member;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +25,7 @@ public class MemberReqDto {
                 .mid(mid)
                 .pwd(passwordEncoder.encode(pwd))
                 .nick(nick)
-                .social("COMMON")
+                .social(Social.COMMON)
                 .authority(Authority.ROLL_USER)
                 .build();
     }

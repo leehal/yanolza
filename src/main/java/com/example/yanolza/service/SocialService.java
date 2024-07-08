@@ -1,5 +1,6 @@
 package com.example.yanolza.service;
 
+import com.example.yanolza.constant.Social;
 import com.example.yanolza.dto.KakaoDto;
 import com.example.yanolza.dto.MemberReqDto;
 import com.example.yanolza.entity.Member;
@@ -43,7 +44,7 @@ public class SocialService {
             String pwd = kakaoDto.getId();
             memberReqDto.setMid(mid);
             memberReqDto.setPwd(pwd);
-            if(socialRepository.existsByMidAndSocial(mid,"COMMON")||socialRepository.existsByMidAndSocial(mid,"NAVER")||socialRepository.existsByMidAndSocial(mid,"GOOGLE")) {
+            if(socialRepository.existsByMidAndSocial(mid, Social.COMMON)||socialRepository.existsByMidAndSocial(mid,Social.NAVER)||socialRepository.existsByMidAndSocial(mid,Social.GOOGLE)) {
                 return null;
             }
             else if(!socialRepository.existsByMid(mid)){

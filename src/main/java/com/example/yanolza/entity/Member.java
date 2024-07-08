@@ -2,6 +2,7 @@ package com.example.yanolza.entity;
 
 
 import com.example.yanolza.constant.Authority;
+import com.example.yanolza.constant.Social;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,14 +30,15 @@ public class Member {
     private String image;
     @Enumerated(EnumType.STRING)
     private Authority authority;
-    private String social;
+    @Enumerated(EnumType.STRING)
+    private Social social;
     @Column(name="refresh_token")
     private String refreshToken;
     @Column(name="refresh_token_exp")
     private Long refreshTokenExpiresIn;
 
     @Builder
-    public Member(String nick, String mid, String pwd, String email, String image, String social,Authority authority) {
+    public Member(String nick, String mid, String pwd, String email, String image, Social social,Authority authority) {
         this.nick = nick;
         this.mid = mid;
         this.pwd = pwd;

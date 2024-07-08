@@ -10,12 +10,10 @@ import com.example.yanolza.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/my")
@@ -29,7 +27,6 @@ public class MyController {
         MemberResDto memberDto = MemberResDto.of(memberService.memberIdFindMember());
         return ResponseEntity.ok(memberDto);
     }
-
     @GetMapping("/dibs")
     public ResponseEntity<Boolean> dibs (@RequestParam Long tno){
         return ResponseEntity.ok(dibsService.dibs(tno));
@@ -42,4 +39,14 @@ public class MyController {
     public ResponseEntity<List<TravelDto>> dibsList (){
         return ResponseEntity.ok(dibsService.dibsList());
     }
+
+    @PostMapping("/checkpw")
+    public ResponseEntity<Boolean> chechPw (@RequestBody MemberReqDto memberReqDto) {
+        return ResponseEntity.ok(memberService.checkPw(memberReqDto));
+    }
+    @PostMapping("/editinfo")
+    public ResponseEntity<Boolean> editInfo (@RequestBody Map<String,String> data){
+        String info = data.get("info");
+        int type = Integer.parseInt(data.get("type"));
+        return ResponseEntity.ok(memberService.editInfo(info,type));}
 }
