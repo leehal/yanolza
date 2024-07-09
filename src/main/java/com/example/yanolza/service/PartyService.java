@@ -135,6 +135,7 @@ public class PartyService {
                                     .caContent(dto.getCaContent())
                                     .calenderNick(member.get())
                                     .caDate(dateTime)
+                                    .cplace(dto.getCplace())
                                     .build()
                     );
                     calendarRepository.save(calendar);
@@ -237,6 +238,7 @@ public class PartyService {
                     .calenderPno(oriCalendar.get().getCalenderPno())
                     .caContent(dto.getCaContent())
                     .calenderNick(member)
+                    .cplace(dto.getCplace())
                     .build();
             calendarRepository.save(calendar);
             isTrue = true;
@@ -257,6 +259,7 @@ public class PartyService {
                     .calenderPno(party.get())
                     .caContent(dto.getCaContent())
                     .calenderNick(member)
+                    .cplace(dto.getCplace())
                     .build();
             calendarRepository.save(calendar);
             isTrue = true;

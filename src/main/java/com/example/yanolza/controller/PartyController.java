@@ -82,6 +82,7 @@ public class PartyController {
     }
     @PostMapping("/cosup")
     public ResponseEntity<Boolean> cosUpDate(@RequestBody CalendarDto calendarDto){
+        log.info(calendarDto.getCplace());
         return ResponseEntity.ok(partyService.cosUpdate(calendarDto));
     }
     @PostMapping("/onesave")

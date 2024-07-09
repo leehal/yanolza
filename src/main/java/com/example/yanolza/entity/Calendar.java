@@ -31,4 +31,5 @@ public class Calendar {
     private Party calenderPno;
 //    private String color;
     private String caddr;
+    private String cplace;
 }

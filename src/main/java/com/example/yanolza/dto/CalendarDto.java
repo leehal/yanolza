@@ -20,6 +20,7 @@ public class CalendarDto {
     private String calenderNick;
     private Long calenderPno;
     private String caddr;
+    private String cplace;
 
     public static CalendarDto of (Calendar calendar){
         LocalDateTime dateTime = calendar.getCaDate();
@@ -35,6 +36,7 @@ public class CalendarDto {
                 .calenderNick(calendar.getCalenderNick().getNick())
                 .calenderPno(calendar.getCalenderPno().getPno())
                 .caddr(calendar.getCaddr())
+                .cplace(calendar.getCplace())
                 .build();
     }
 }
