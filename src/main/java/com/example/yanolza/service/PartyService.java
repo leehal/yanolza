@@ -26,6 +26,7 @@ public class PartyService {
     private final CalendarRepository calendarRepository;
     private final DibsRepository dibsRepository;
     private final TravelRepository travelRepository;
+    private final ChattingRoomRepository chatRoomRepository;
 
     //    party save
     public boolean partyInsert(PartyRequestDto reqDto) {
@@ -39,6 +40,22 @@ public class PartyService {
                 .build();
 
         partyRepository.save(party);
+
+        String randomId = UUID.randomUUID().toString(); // roomId 생성 PK, String 타입 // 반환이 UUID 타입 객체라 toString()을 사용해 문자열로 만들어줌.
+//        ChatRoomResDto chatRoom = ChatRoomResDto.builder() // 채팅방 생성
+//                .roomId(randomId)
+//                .regDate(LocalDateTime.now())
+//                .`
+//                .build();
+        ChattingRoom room = ChattingRoom.builder()
+                .roomId(randomId)
+                .chatPno(party)
+                .createdAt(LocalDateTime.now())
+                .build();
+//        ChattingRoom newChatRoom = new ChattingRoom();
+//        newChatRoom.setRoomId(chatRoom.getRoomId());
+//        newChatRoom.setCreatedAt(chatRoom.getRegDate());
+        chatRoomRepository.save(room);
 
         Optional<Party> partyPname = partyRepository.findByPname(pname1);
         if (partyPname.isPresent()) {
@@ -159,24 +176,30 @@ public class PartyService {
     }
 
     //    모임에 따른 일정 전체 조회
-    public List<String> selectCalendarPnoAll(Long pno) {
-        List<String> dateList = new ArrayList<>();
+    public PDateChatDto selectCalendarPnoAll(Long pno) {
         Optional<Party> party = partyRepository.findById(pno);
+        PDateChatDto pdto = new PDateChatDto();
+        List<String > list = new ArrayList<>();
 
         if (party.isPresent()) {
             List<Calendar> calendars = calendarRepository.findByCalenderPno(party.get());
+            Optional<ChattingRoom> room = chatRoomRepository.findByChatPno(party.get());
+            if (room.isPresent()){
+                pdto.setRoomId(room.get().getRoomId());
+            }
 
             for (Calendar c : calendars) {
                 CalendarDto dto = CalendarDto.of(c);
-                dateList.add(dto.getCaDate()); // CalendarDto에서 caDate만 추출해 추가
+                list.add(dto.getCaDate()); // CalendarDto에서 caDate만 추출해 추가
             }
         }
 
         // 중복 제거를 위해 Set으로 변환 후 다시 List로 변환
-        Set<String> dateSet = new HashSet<>(dateList); // 중복 제거
-        dateList = new ArrayList<>(dateSet); // Set을 List로 변환
+        Set<String> dateSet = new HashSet<>(list); // 중복 제거
+        list = new ArrayList<>(dateSet); // Set을 List로 변환
+        pdto.setDates(list);
 
-        return dateList;
+        return pdto;
     }
 
     public List<CalendarDto> selectPnoCalendarOneDay(Long pno, String date) {
@@ -202,7 +225,7 @@ public class PartyService {
             if (member.isPresent()) {
                 List<Dibs> dibs = dibsRepository.findByDnick(member.get());
                 for (Dibs dib : dibs) {
-                    Travel travel = travelRepository.findByTno(dib.getTno())
+                    Travel travel = travelRepository.findById(dib.getTno())
                             .orElseThrow(() -> new NoSuchElementException(dib.getTno() + "에대해 찾을수 없음"));
                     list.add(TravelDto.of(travel));
                 }

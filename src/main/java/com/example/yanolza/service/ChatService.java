@@ -38,7 +38,7 @@ public class ChatService {
         for (ChattingRoom cr : roomList) {
             ChatRoomResDto dto = ChatRoomResDto.builder()
                     .roomId(cr.getRoomId())
-                    .name(cr.getRoomName())
+//                    .name(cr.getRoomName())
                     .build();
             chatRooms.put(cr.getRoomId(), dto);
         }
@@ -59,7 +59,7 @@ public class ChatService {
 
         ChatRoomResDto chatRoom = ChatRoomResDto.builder() // 채팅방 생성
                 .roomId(randomId)
-                .name(name)
+//                .name(name)
                 .regDate(LocalDateTime.now())
                 .build();
         chatRooms.put(randomId, chatRoom);  // 방 생성, 키를 UUID로 하고 방 정보를 값으로 저장 // chatRooms(채팅방 리스트)에 생성한 채팅방 추가함.
@@ -67,7 +67,7 @@ public class ChatService {
         // DB에 새로운 채팅방 저장
         ChattingRoom newChatRoom = new ChattingRoom();
         newChatRoom.setRoomId(chatRoom.getRoomId());
-        newChatRoom.setRoomName(chatRoom.getName());
+//        newChatRoom.setRoomName(chatRoom.getName());
         newChatRoom.setCreatedAt(chatRoom.getRegDate());
         chatRooms.put(randomId, chatRoom);
         chatRoomRepository.save(newChatRoom);

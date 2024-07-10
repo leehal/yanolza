@@ -20,10 +20,13 @@ public class ChattingRoom {
     @Id // UUID로 String 타입 RoomID 반환
     @Column(name="room_id")
     private String roomId;
-    @Column(name="room_name")
-    private String roomName;
+//    @Column(name="room_name")
+//    private String roomName;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn
+    private Party chatPno;
 
 //    @Id
 //    @Column(name = "room_id", length = 50)
