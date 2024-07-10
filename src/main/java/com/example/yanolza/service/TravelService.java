@@ -5,11 +5,16 @@ import com.example.yanolza.entity.Travel;
 import com.example.yanolza.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -44,13 +49,18 @@ public class TravelService {
     }
 
     // 모든 여행 전체 조회
-    public List<TravelDto> selectAllTravels() {
-        List<Travel> travels = travelRepository.findAll();
-        List<TravelDto> dtos = new ArrayList<>();
+    public Map<String, Object> selectAllTravels(int page) {
+        Pageable pageable = PageRequest.of(page,12);
+        List<Travel> travels = travelRepository.findAll(pageable).getContent();
+        List<TravelDto> travelDtos = new ArrayList<>();
         for (Travel travel : travels) {
             TravelDto trip = TravelDto.of(travel);
-            dtos.add(trip);
+            travelDtos.add(trip);
         }
-        return dtos;
+        int cnt =travelRepository.findAll(pageable).getTotalPages();
+        Map<String, Object> result = new HashMap<>();
+        result.put("travels", travelDtos);
+        result.put("totalPages", cnt);
+        return result;
     }
 }
