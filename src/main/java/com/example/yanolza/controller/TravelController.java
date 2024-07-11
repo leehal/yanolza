@@ -19,9 +19,13 @@ import java.util.Objects;
 public class TravelController {
     public final TravelService travelService;
 
-    @GetMapping("/travellist")
-    public ResponseEntity<Map<String, Object>> travelList (@RequestParam(defaultValue = "0") int page){
-        Map<String, Object> result = travelService.selectAllTravels(page);
+    @PostMapping("/travellist")
+    public ResponseEntity<Map<String, Object>> travelList (@RequestBody Map<String, String> data){
+        int page = Integer.parseInt(data.get("page"));
+        String category = data.get("category");
+        String city = data.get("city");
+        String name = data.get("name");
+        Map<String, Object> result = travelService.selectAllTravels(page,category,city,name);
         return ResponseEntity.ok(result);
     }
 }

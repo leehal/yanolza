@@ -49,9 +49,25 @@ public class TravelService {
     }
 
     // 모든 여행 전체 조회
-    public Map<String, Object> selectAllTravels(int page) {
+    public Map<String, Object> selectAllTravels(int page, String category, String city, String name) {
         Pageable pageable = PageRequest.of(page,12);
-        List<Travel> travels = travelRepository.findAll(pageable).getContent();
+        List<Travel> travels;
+        if (category != null && city != null && name != null) {
+            travels = travelRepository.findByTcategoryAndTaddrLikeAndTnameLike(category, city, name, pageable).getContent();
+        } else if (category != null && city != null) {
+            travels = travelRepository.findByTcategoryAndTaddrLike(category, city, pageable).getContent();
+        } else if (city != null && name != null) {
+            travels = travelRepository.findByTaddrLikeAndTnameLike(city, name, pageable).getContent();
+        } else if (category != null && name != null) {
+            travels = travelRepository.findByTcategoryAndTnameLike(category, name, pageable).getContent();
+        } else if (category != null) {
+            travels = travelRepository.findByTcategory(category, pageable).getContent();
+        } else if (city != null) {
+            travels = travelRepository.findByTaddrLike(city, pageable).getContent();
+        } else {
+            travels = travelRepository.findAll(pageable).getContent();
+        }
+
         List<TravelDto> travelDtos = new ArrayList<>();
         for (Travel travel : travels) {
             TravelDto trip = TravelDto.of(travel);
