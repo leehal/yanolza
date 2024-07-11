@@ -17,7 +17,7 @@ public class ChatRoomResDto {
     private String roomId; // 채팅방 ID
 //    private String name; // 채팅방 이름
     private LocalDateTime regDate; // 채팅방 생성 시간
-//    private Long pno;
+    private Long pno;
 
     @JsonIgnore // 이 어노테이션으로 WebSocketSession의 직렬화를 방지
     private Set<WebSocketSession> sessions; // 채팅방에 입장한 세션 정보를 담을 Set // Set은 중복 허용 안함, 객체들의 집합을 중복없이 관리
@@ -28,9 +28,9 @@ public class ChatRoomResDto {
     }
 
     @Builder // 빌더 패턴 적용
-    public ChatRoomResDto(String roomId, LocalDateTime regDate) {
+    public ChatRoomResDto(String roomId, Long pno, LocalDateTime regDate) {
         this.roomId = roomId;
-//        this.pno = pno;
+        this.pno = pno;
         this.regDate = regDate;
         this.sessions = Collections.newSetFromMap(new ConcurrentHashMap<>()); // 동시성 문제를 해결하기 위해 ConcurrentHashMap 사용
     }

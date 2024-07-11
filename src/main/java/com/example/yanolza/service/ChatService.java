@@ -5,6 +5,7 @@ import com.example.yanolza.dto.ChatRoomResDto;
 import com.example.yanolza.entity.Chatting;
 import com.example.yanolza.entity.ChattingRoom;
 import com.example.yanolza.entity.Member;
+import com.example.yanolza.entity.Party;
 import com.example.yanolza.repository.ChattingRepository;
 import com.example.yanolza.repository.ChattingRoomRepository;
 import com.example.yanolza.repository.MemberRepository;
@@ -51,7 +52,7 @@ public class ChatService {
     }
 
     // 방 개설하기
-    public ChatRoomResDto createRoom(String name) { //
+    public ChatRoomResDto createRoom(Party party) { //
         String randomId = UUID.randomUUID().toString(); // roomId 생성 PK, String 타입 // 반환이 UUID 타입 객체라 toString()을 사용해 문자열로 만들어줌.
         // UUID: UUID는 Universally Unique Identifier의 약자로, 전 세계적으로 고유한 식별자를 생성하는 데 사용됩니다. 이는 주로 중복될 가능성이 거의 없는 고유한 ID를 필요로 하는 시스템에서 사용됩니다.
         // randomUUID(): UUID 클래스의 randomUUID 메서드는 랜덤한 UUID를 생성합니다. 이 메서드는 표준에 따라 128비트의 임의의 값을 생성하며, 이 값은 매우 낮은 확률로 중복될 수 있습니다.
@@ -59,10 +60,17 @@ public class ChatService {
 
         ChatRoomResDto chatRoom = ChatRoomResDto.builder() // 채팅방 생성
                 .roomId(randomId)
-//                .name(name)
                 .regDate(LocalDateTime.now())
+                .pno(party.getPno())
                 .build();
         chatRooms.put(randomId, chatRoom);  // 방 생성, 키를 UUID로 하고 방 정보를 값으로 저장 // chatRooms(채팅방 리스트)에 생성한 채팅방 추가함.
+
+        ChattingRoom room = ChattingRoom.builder()
+                .roomId(randomId)
+                .chatPno(party)
+                .createdAt(LocalDateTime.now())
+                .build();
+        chatRoomRepository.save(room);
 
         // DB에 새로운 채팅방 저장
         ChattingRoom newChatRoom = new ChattingRoom();
@@ -70,7 +78,7 @@ public class ChatService {
 //        newChatRoom.setRoomName(chatRoom.getName());
         newChatRoom.setCreatedAt(chatRoom.getRegDate());
         chatRooms.put(randomId, chatRoom);
-        chatRoomRepository.save(newChatRoom);
+//        chatRoomRepository.save(newChatRoom);
 
         return chatRoom; // 생성한 채팅방을 리턴
     }

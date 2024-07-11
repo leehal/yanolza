@@ -23,12 +23,12 @@ import java.util.List;
 // 사용자가 WebSocket 연결을 설정하기 전에 필요한 데이터를 가져오거나, 특정 작업을 수행하기 위해 사용될 수 있습니다.
 public class ChatController {
     private final ChatService chatService;
-    @PostMapping("/new")
-    public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDto chatRoomReqDTO) {
-        log.warn("chatRoomDto : {}", chatRoomReqDTO);
-        ChatRoomResDto room = chatService.createRoom(chatRoomReqDTO.getName());
-        return new ResponseEntity<>(room.getRoomId(), HttpStatus.OK);
-    }
+//    @PostMapping("/new")
+//    public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDto chatRoomReqDTO) {
+//        log.warn("chatRoomDto : {}", chatRoomReqDTO);
+//        ChatRoomResDto room = chatService.createRoom(chatRoomReqDTO.getName());
+//        return new ResponseEntity<>(room.getRoomId(), HttpStatus.OK);
+//    }
     @GetMapping("/list")
     public ResponseEntity<List<ChatRoomResDto>> getRooms() {
         return ResponseEntity.ok(chatService.findAllRoom());

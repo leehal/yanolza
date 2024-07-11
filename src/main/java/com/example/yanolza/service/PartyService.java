@@ -27,6 +27,7 @@ public class PartyService {
     private final DibsRepository dibsRepository;
     private final TravelRepository travelRepository;
     private final ChattingRoomRepository chatRoomRepository;
+    private final ChatService chatService;
 
     //    party save
     public boolean partyInsert(PartyRequestDto reqDto) {
@@ -41,21 +42,15 @@ public class PartyService {
 
         partyRepository.save(party);
 
-        String randomId = UUID.randomUUID().toString(); // roomId 생성 PK, String 타입 // 반환이 UUID 타입 객체라 toString()을 사용해 문자열로 만들어줌.
-//        ChatRoomResDto chatRoom = ChatRoomResDto.builder() // 채팅방 생성
+//        String randomId = UUID.randomUUID().toString(); // roomId 생성 PK, String 타입 // 반환이 UUID 타입 객체라 toString()을 사용해 문자열로 만들어줌.
+//        ChattingRoom room = ChattingRoom.builder()
 //                .roomId(randomId)
-//                .regDate(LocalDateTime.now())
-//                .`
+//                .chatPno(party)
+//                .createdAt(LocalDateTime.now())
 //                .build();
-        ChattingRoom room = ChattingRoom.builder()
-                .roomId(randomId)
-                .chatPno(party)
-                .createdAt(LocalDateTime.now())
-                .build();
-//        ChattingRoom newChatRoom = new ChattingRoom();
-//        newChatRoom.setRoomId(chatRoom.getRoomId());
-//        newChatRoom.setCreatedAt(chatRoom.getRegDate());
-        chatRoomRepository.save(room);
+//        chatRoomRepository.save(room);
+
+        chatService.createRoom(party);
 
         Optional<Party> partyPname = partyRepository.findByPname(pname1);
         if (partyPname.isPresent()) {
