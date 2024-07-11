@@ -18,4 +18,5 @@ public class ChatMessageDto {
     private String sender; // 유저 이름
     private String message;
     private LocalDateTime sentAt;
+    private String image;
 }

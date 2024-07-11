@@ -59,6 +59,7 @@ public class ChatController {
                     .message(chat.getMessage())
                     .roomId(chat.getChatRoom().getRoomId())
                     .sender(chat.getSender().getNick())
+                    .image(chat.getSender().getImage())
                     .sentAt(chat.getSentAt())
                     .build();
             list.add(dto);
