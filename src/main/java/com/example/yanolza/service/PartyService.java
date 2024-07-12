@@ -290,4 +290,37 @@ public class PartyService {
         isTrue = true;
         return isTrue;
     }
+
+    public boolean memberUpdate(PartyRequestDto reqDto){
+        boolean isTrue= false;
+        Long pno = reqDto.getPno();
+        List<String> nickList = reqDto.getNick();
+        Optional<Party> party = partyRepository.findById(pno);
+        if (party.isPresent()) {
+            for (String s : nickList) {
+                Optional<Member> member = memberRepository.findByNick(s);
+                if (member.isPresent()) {
+                    partyPeopleReRepository.save(
+                            PartyPeople.builder()
+                                    .partyPeopleNick(member.get())
+                                    .partyPeoplePno(party.get())
+                                    .build()
+                    );
+                    isTrue = true;
+                }
+            }
+        }
+        return isTrue;
+    }
+
+    public boolean deletePartyPeople(Long pno){
+        boolean isTrue= false;
+        Member member = memberService.memberIdFindMember();
+        Optional<Party> party = partyRepository.findById(pno);
+        if(party.isPresent()){
+            partyPeopleReRepository.deleteByPartyPeopleNickAndPartyPeoplePno(member,party.get());
+            isTrue = true;
+        }
+        return isTrue;
+    }
 }

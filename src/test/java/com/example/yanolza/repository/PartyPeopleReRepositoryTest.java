@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Slf4j
-//@TestPropertySource(locations = "classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class PartyPeopleReRepositoryTest {
     @Autowired
     PartyPeopleReRepository partyPeopleReRepository;
@@ -252,6 +252,20 @@ class PartyPeopleReRepositoryTest {
         for (Calendar calendar : newList) {
             log.info("결과로 남은 cano는 "+calendar.getCano());
         }
+    }
+
+    @Test
+    @DisplayName("파티 나가기")
+    public void outParty(){
+        createTestParty();
+        List<PartyPeople> partyPeoples = partyPeopleReRepository.findAll();
+        log.info(partyPeoples.toString());
+        Member member =  partyPeoples.get(0).getPartyPeopleNick();
+        Party party = partyPeoples.get(0).getPartyPeoplePno();
+        partyPeopleReRepository.deleteByPartyPeopleNickAndPartyPeoplePno(member,party);
+        List<PartyPeople> result = partyPeopleReRepository.findAll();
+        log.info("결과 : "+result);
+
     }
 
 }
