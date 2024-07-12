@@ -52,20 +52,37 @@ public class TravelService {
     public Map<String, Object> selectAllTravels(int page, String category, String city, String name) {
         Pageable pageable = PageRequest.of(page,12);
         List<Travel> travels;
+        if (city.equals("제주특별자치도")) {
+            city = "제주도";
+        } else if (city.equals("전북특별자치도")){
+            city = "전북";
+        }
+
+        int cnt;
         if (!category.isEmpty() && !city.isEmpty() && !name.isEmpty()) {
-            travels = travelRepository.findByTcategoryAndTaddrLikeAndTnameLike(category, city, name, pageable).getContent();
+            travels = travelRepository.findByTcategoryAndTaddrContainingAndTnameContaining(category, city, name, pageable).getContent();
+            cnt = travelRepository.findByTcategoryAndTaddrContainingAndTnameContaining(category, city, name, pageable).getTotalPages();
         } else if (!category.isEmpty() && !city.isEmpty()) {
-            travels = travelRepository.findByTcategoryAndTaddrLike(category, city, pageable).getContent();
+            travels = travelRepository.findByTcategoryAndTaddrContaining(category, city, pageable).getContent();
+            cnt = travelRepository.findByTcategoryAndTaddrContaining(category, city, pageable).getTotalPages();
         } else if (!city.isEmpty() && !name.isEmpty()) {
-            travels = travelRepository.findByTaddrLikeAndTnameLike(city, name, pageable).getContent();
+            travels = travelRepository.findByTaddrContainingAndTnameContaining(city, name, pageable).getContent();
+            cnt = travelRepository.findByTaddrContainingAndTnameContaining(city, name, pageable).getTotalPages();
         } else if (!category.isEmpty() && !name.isEmpty()) {
-            travels = travelRepository.findByTcategoryAndTnameLike(category, name, pageable).getContent();
+            travels = travelRepository.findByTcategoryAndTnameContaining(category, name, pageable).getContent();
+            cnt = travelRepository.findByTcategoryAndTnameContaining(category, name, pageable).getTotalPages();
         } else if (!category.isEmpty()) {
             travels = travelRepository.findByTcategory(category, pageable).getContent();
+            cnt = travelRepository.findByTcategory(category, pageable).getTotalPages();
         } else if (!city.isEmpty()) {
-            travels = travelRepository.findByTaddrLike(city, pageable).getContent();
-        } else {
+            travels = travelRepository.findByTaddrContaining(city, pageable).getContent();
+            cnt = travelRepository.findByTaddrContaining(city, pageable).getTotalPages();
+        } else if(!name.isEmpty()){
+            travels = travelRepository.findByTnameContaining(name,pageable).getContent();
+            cnt = travelRepository.findByTnameContaining(name,pageable).getTotalPages();
+        } else{
             travels = travelRepository.findAll(pageable).getContent();
+            cnt =travelRepository.findAll(pageable).getTotalPages();
         }
 
         List<TravelDto> travelDtos = new ArrayList<>();
@@ -73,7 +90,6 @@ public class TravelService {
             TravelDto trip = TravelDto.of(travel);
             travelDtos.add(trip);
         }
-        int cnt =travelRepository.findAll(pageable).getTotalPages();
         Map<String, Object> result = new HashMap<>();
         result.put("travels", travelDtos);
         result.put("totalPages", cnt);
