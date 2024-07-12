@@ -76,7 +76,7 @@ public class PartyController {
         return ResponseEntity.ok(partyService.membersDibsList(dtos.getMemberResDtos()));
     }
     // pname update
-    @PostMapping("pnameup/{pno}/{pname}")
+    @PostMapping("/pnameup/{pno}/{pname}")
     public ResponseEntity<Boolean> pnameUpdateOne(@PathVariable("pno") Long pno, @PathVariable("pname") String  pname){
         return ResponseEntity.ok(partyService.pnameUpdate(pno,pname));
     }
@@ -89,8 +89,18 @@ public class PartyController {
     public ResponseEntity<Boolean> cosSaveOne(@RequestBody CalendarDto calendarDto){
         return ResponseEntity.ok(partyService.cosOneInsert(calendarDto));
     }
-    @PostMapping("cosdelete/{cano}")
+    @PostMapping("/cosdelete/{cano}")
     public ResponseEntity<Boolean> cosDelete(@PathVariable("cano") Long cano){
         return ResponseEntity.ok(partyService.cosOneDelete(cano));
+    }
+
+    @PostMapping("/pmemup")
+    public ResponseEntity<Boolean> memberAdd(@RequestBody PartyRequestDto dto){
+        return ResponseEntity.ok(partyService.memberUpdate(dto));
+    }
+
+    @PostMapping("/pout/{pno}")
+    public ResponseEntity<Boolean> partyOut(@PathVariable("pno") Long pno){
+        return ResponseEntity.ok(partyService.deletePartyPeople(pno));
     }
 }

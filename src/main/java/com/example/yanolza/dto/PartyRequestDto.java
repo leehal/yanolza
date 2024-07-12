@@ -12,4 +12,5 @@ import java.util.List;
 public class PartyRequestDto {
     private List<String> nick;
     private String pname;
+    private Long pno;
 }

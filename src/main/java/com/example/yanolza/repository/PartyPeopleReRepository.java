@@ -14,4 +14,6 @@ public interface PartyPeopleReRepository extends JpaRepository<PartyPeople,Long>
     List<PartyPeople> findByPartyPeopleNick(Member nick);
 
     List<PartyPeople> findByPartyPeoplePno(Party pno);
+
+    void deleteByPartyPeopleNickAndPartyPeoplePno(Member nick, Party pno);
 }
