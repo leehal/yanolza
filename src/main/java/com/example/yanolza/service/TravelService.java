@@ -52,17 +52,17 @@ public class TravelService {
     public Map<String, Object> selectAllTravels(int page, String category, String city, String name) {
         Pageable pageable = PageRequest.of(page,12);
         List<Travel> travels;
-        if (category != null && city != null && name != null) {
+        if (!category.isEmpty() && !city.isEmpty() && !name.isEmpty()) {
             travels = travelRepository.findByTcategoryAndTaddrLikeAndTnameLike(category, city, name, pageable).getContent();
-        } else if (category != null && city != null) {
+        } else if (!category.isEmpty() && !city.isEmpty()) {
             travels = travelRepository.findByTcategoryAndTaddrLike(category, city, pageable).getContent();
-        } else if (city != null && name != null) {
+        } else if (!city.isEmpty() && !name.isEmpty()) {
             travels = travelRepository.findByTaddrLikeAndTnameLike(city, name, pageable).getContent();
-        } else if (category != null && name != null) {
+        } else if (!category.isEmpty() && !name.isEmpty()) {
             travels = travelRepository.findByTcategoryAndTnameLike(category, name, pageable).getContent();
-        } else if (category != null) {
+        } else if (!category.isEmpty()) {
             travels = travelRepository.findByTcategory(category, pageable).getContent();
-        } else if (city != null) {
+        } else if (!city.isEmpty()) {
             travels = travelRepository.findByTaddrLike(city, pageable).getContent();
         } else {
             travels = travelRepository.findAll(pageable).getContent();
