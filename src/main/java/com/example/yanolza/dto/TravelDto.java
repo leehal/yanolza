@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TravelDto {
+public class TravelDto implements Comparable<TravelDto>{
     private Long tno;
     private String tname;
     private String taddr;
@@ -49,5 +49,11 @@ public class TravelDto {
                 .season(travel.getSeason())
                 .time(travel.getTime())
                 .build();
+    }
+
+    @Override
+    public int compareTo(TravelDto o) {
+        if (this.tno.equals(o.tno)) return 0;
+        else return 1;
     }
 }

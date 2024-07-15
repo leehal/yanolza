@@ -1,7 +1,13 @@
 package com.example.yanolza.service;
 
+import com.example.yanolza.dto.ImageDto;
+import com.example.yanolza.dto.ReviewDto;
 import com.example.yanolza.dto.TravelDto;
+import com.example.yanolza.entity.Image;
+import com.example.yanolza.entity.Member;
+import com.example.yanolza.entity.Review;
 import com.example.yanolza.entity.Travel;
+import com.example.yanolza.repository.ReviewRepository;
 import com.example.yanolza.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -22,7 +25,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TravelService {
     private final TravelRepository travelRepository;
-
+    private final MemberService memberService;
+    private final ReviewRepository reviewRepository;
     // save
     public boolean travelInsert(TravelDto travelDto) {
         boolean isTrue = false;
@@ -94,5 +98,18 @@ public class TravelService {
         result.put("travels", travelDtos);
         result.put("totalPages", cnt);
         return result;
+    }
+    //내가 review쓴 여행 리스트 보여주기
+    public TreeSet<TravelDto> myTravelList() {
+        Member member = memberService.memberIdFindMember();
+        TreeSet<TravelDto> travelDtoSet = new TreeSet<>();
+        List<Review> reviewList = reviewRepository.findByRnick(member);
+        for (Review e : reviewList) {
+            if(travelRepository.findById(e.getTravel().getTno()).isPresent()){
+                TravelDto  travelDto = TravelDto.of(travelRepository.findById(e.getTravel().getTno()).get());
+                travelDtoSet.add(travelDto);
+            }
+        }
+        return travelDtoSet;
     }
 }

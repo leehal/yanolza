@@ -21,6 +21,7 @@ public class ReviewDto {
     private Long rno;
     private String title;
     private int tno;
+    private String tname;
     private String tcategory;
     private String rcategory;
     private String rcontent;
@@ -35,6 +36,7 @@ public class ReviewDto {
                 .rno(review.getRno())
                 .title(review.getTitle())
                 .tno(review.getTravel().getTno().intValue())
+                .tname(review.getTravel().getTname())
                 .tcategory(review.getTravel().getTcategory())
                 .rcontent(review.getRcontent())
                 .rdate(review.getRdate())
