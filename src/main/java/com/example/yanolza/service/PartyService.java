@@ -125,17 +125,14 @@ public class PartyService {
         return list;
     }
 
-    //    calendar insert
+    //    calendar insert 사용함.
     public boolean calendarInsert(CalendarSaveDto calendarDtos) {
         boolean isTrue = false;
         Optional<Party> party = partyRepository.findById(calendarDtos.getPno());
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDateTime dateTime = LocalDate.parse(calendarDto.getCaDate(), formatter).atStartOfDay();
-        Optional<Member> member = memberRepository.findByNick(calendarDtos.getNick());
+       Member member = memberService.memberIdFindMember();
 
         if (party.isPresent()) {
 
-            if (member.isPresent()) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREAN);
                 LocalDateTime dateTime = LocalDate.parse(calendarDtos.getDate(), formatter).atStartOfDay();
 
@@ -145,7 +142,7 @@ public class PartyService {
                                     .caddr(dto.getCaddr())
                                     .calenderPno(party.get())
                                     .caContent(dto.getCaContent())
-                                    .calenderNick(member.get())
+                                    .calenderNick(member)
                                     .caDate(dateTime)
                                     .cplace(dto.getCplace())
                                     .build()
@@ -153,7 +150,6 @@ public class PartyService {
                     calendarRepository.save(calendar);
                     isTrue = true;
                 }
-            }
         }
         return isTrue;
     }
