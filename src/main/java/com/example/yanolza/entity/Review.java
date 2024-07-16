@@ -32,6 +32,11 @@ public class Review {
     @Column(nullable = false)
     private String rate;
     @ManyToOne
-    @JoinColumn(name = "nick")
+    @JoinColumn(name = "nick", insertable = false, updatable = false)
     private Member rnick;
+
+    @PreRemove
+    private void preRemoveReview() {
+        this.rnick = null;
+    }
 }

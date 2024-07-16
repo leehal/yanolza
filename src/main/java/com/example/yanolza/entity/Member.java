@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -36,6 +37,27 @@ public class Member {
     private String refreshToken;
     @Column(name="refresh_token_exp")
     private Long refreshTokenExpiresIn;
+
+    @OneToMany(mappedBy = "calenderNick", cascade = CascadeType.REMOVE)
+    private List<Calendar> calendars;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+    private List<Chatting> sentMessages;
+
+    @OneToMany(mappedBy = "dnick", cascade = CascadeType.REMOVE)
+    private List<Dibs> dibs;
+
+    @OneToMany(mappedBy = "from", cascade = CascadeType.REMOVE)
+    private List<Friend> sentFriendRequests;
+
+    @OneToMany(mappedBy = "to", cascade = CascadeType.REMOVE)
+    private List<Friend> receivedFriendRequests;
+
+    @OneToMany(mappedBy = "rnick", cascade = CascadeType.REMOVE)
+    private List<Review> rnick;
+
+    @OneToMany(mappedBy = "partyPeopleNick", cascade = CascadeType.REMOVE)
+    private List<PartyPeople> partyPeople;
 
     @Builder
     public Member(String nick, String mid, String pwd, String email, String image, Social social,Authority authority) {
