@@ -43,7 +43,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .authorizeRequests() // 요청에 대한 접근 권한을 설정합니다
-                .antMatchers("/", "/auth/**", "/ws/**", "/travel/**", "/elastic/**").permitAll()
+                .antMatchers("/", "/auth/**", "/ws/**", "/travel/**", "/elastic/**", "/review/**").permitAll()
                 // .antMatchers().permitAll(): 특정 경로에 대해 모든 사용자에게 접근 권한을 부여합니다.
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/favicon.ico","/manifest.json").permitAll()
