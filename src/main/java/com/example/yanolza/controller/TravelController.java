@@ -36,4 +36,8 @@ public class TravelController {
         List<ReviewDto> list = reviewService.reviewList(tno);
         return ResponseEntity.ok(list);
     }
+    @GetMapping("/travel")
+    public ResponseEntity<TravelDto> travel(@RequestParam Long tno) {
+        return ResponseEntity.ok(travelService.travel(tno));
+    }
 }

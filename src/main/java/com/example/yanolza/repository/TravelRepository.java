@@ -13,9 +13,9 @@ public interface TravelRepository extends JpaRepository<Travel,Long> {
     Optional<Travel> findByTno(Long tno);
     Page<Travel> findByTcategory(String category, Pageable pageable);
     Page<Travel> findByTnameContaining(String name, Pageable pageable);
-    Page<Travel> findByTaddrContaining(String city,Pageable pageable);
+    Page<Travel> findByTaddrLike(String city,Pageable pageable);
     Page<Travel> findByTcategoryAndTnameContaining(String category,String name, Pageable pageable);
-    Page<Travel> findByTaddrContainingAndTnameContaining(String city,String name,Pageable pageable);
-    Page<Travel> findByTcategoryAndTaddrContaining(String category,String city,Pageable pageable);
-    Page<Travel> findByTcategoryAndTaddrContainingAndTnameContaining(String category,String city,String name,Pageable pageable);
+    Page<Travel> findByTaddrLikeAndTnameContaining(String city,String name,Pageable pageable);
+    Page<Travel> findByTcategoryAndTaddrLike(String category,String city,Pageable pageable);
+    Page<Travel> findByTcategoryAndTaddrLikeAndTnameContaining(String category,String city,String name,Pageable pageable);
 }
