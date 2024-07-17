@@ -27,12 +27,15 @@ public class PartyService {
     private final DibsRepository dibsRepository;
     private final TravelRepository travelRepository;
     private final ChattingRoomRepository chatRoomRepository;
+    private final ChattingRepository chattingRepository;
     private final ChatService chatService;
 
     //    party save
     public boolean partyInsert(PartyRequestDto reqDto) {
         boolean isTrue = false;
+        Member myNick = memberService.memberIdFindMember();
         List<String> nickName = reqDto.getNick();
+        nickName.add(myNick.getNick());
         String pname1 = reqDto.getPname();
 
         Party party = Party.builder()
@@ -41,14 +44,6 @@ public class PartyService {
                 .build();
 
         partyRepository.save(party);
-
-//        String randomId = UUID.randomUUID().toString(); // roomId 생성 PK, String 타입 // 반환이 UUID 타입 객체라 toString()을 사용해 문자열로 만들어줌.
-//        ChattingRoom room = ChattingRoom.builder()
-//                .roomId(randomId)
-//                .chatPno(party)
-//                .createdAt(LocalDateTime.now())
-//                .build();
-//        chatRoomRepository.save(room);
 
         chatService.createRoom(party);
 
@@ -309,13 +304,25 @@ public class PartyService {
         return isTrue;
     }
 
-    public boolean deletePartyPeople(Long pno){
-        boolean isTrue= false;
+    public boolean deletePartyPeople(Long pno) {
+        boolean isTrue = false;
         Member member = memberService.memberIdFindMember();
         Optional<Party> party = partyRepository.findById(pno);
-        if(party.isPresent()){
-            partyPeopleReRepository.deleteByPartyPeopleNickAndPartyPeoplePno(member,party.get());
+        if (party.isPresent()) {
+            partyPeopleReRepository.deleteByPartyPeopleNickAndPartyPeoplePno(member, party.get());
             isTrue = true;
+            List<PartyPeople> partyPeople = partyPeopleReRepository.findByPartyPeoplePno(party.get());
+            if(partyPeople.isEmpty()){
+                Optional<ChattingRoom> chatRoom =  chatRoomRepository.findByChatPno(party.get());
+                if(chatRoom.isPresent()) {
+                    List<Chatting> chatMsg = chattingRepository.findByChatRoom(chatRoom.get());
+                    for (Chatting chat : chatMsg) {
+                        chattingRepository.deleteById(chat.getChno());
+                    }
+                chatRoomRepository.deleteById(chatRoom.get().getRoomId());
+                }
+                partyRepository.deleteById(pno);
+            }
         }
         return isTrue;
     }

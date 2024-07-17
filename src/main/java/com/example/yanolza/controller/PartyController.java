@@ -18,7 +18,7 @@ import java.util.Map;
 public class PartyController {
     private final PartyService partyService;
 
-//   save party
+//   save party 사용함
     @PostMapping("/save")
     public ResponseEntity<Boolean> createParty(@RequestBody PartyRequestDto requestDto){
         log.info(requestDto.getPname());
@@ -99,6 +99,7 @@ public class PartyController {
         return ResponseEntity.ok(partyService.memberUpdate(dto));
     }
 
+    // 해당 유저가 파티 나가기 사용함
     @PostMapping("/pout/{pno}")
     public ResponseEntity<Boolean> partyOut(@PathVariable("pno") Long pno){
         return ResponseEntity.ok(partyService.deletePartyPeople(pno));
