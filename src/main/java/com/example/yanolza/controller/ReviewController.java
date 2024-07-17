@@ -28,8 +28,8 @@ public class ReviewController {
     private final MemberService memberService;
 
     @GetMapping("/reviewlist")
-    public ResponseEntity<List<ReviewDto>> reviewList(@RequestParam Long tno, @RequestParam String nick) {
-        List<ReviewDto> list = reviewService.findByTno(tno,nick);
+    public ResponseEntity<List<ReviewDto>> reviewList(@RequestParam Long tno) {
+        List<ReviewDto> list = reviewService.findByTno(tno);
         return ResponseEntity.ok(list);
     }
 

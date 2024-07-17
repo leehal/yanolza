@@ -32,7 +32,7 @@ public class Review {
     @Column(nullable = false)
     private String rate;
     @ManyToOne
-    @JoinColumn(name = "nick", insertable = false, updatable = false)
+    @JoinColumn(name = "nick")
     private Member rnick;
 
     @PreRemove
