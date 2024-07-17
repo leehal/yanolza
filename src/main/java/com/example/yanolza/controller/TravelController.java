@@ -1,6 +1,8 @@
 package com.example.yanolza.controller;
 
+import com.example.yanolza.dto.ReviewDto;
 import com.example.yanolza.dto.TravelDto;
+import com.example.yanolza.service.ReviewService;
 import com.example.yanolza.service.TravelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import java.util.Objects;
 @RequestMapping("/travel")
 public class TravelController {
     public final TravelService travelService;
+    public final ReviewService reviewService;
 
     @PostMapping("/travellist")
     public ResponseEntity<Map<String, Object>> travelList (@RequestBody Map<String, String> data){
@@ -27,5 +30,10 @@ public class TravelController {
         String name = data.get("name");
         Map<String, Object> result = travelService.selectAllTravels(page,category,city,name);
         return ResponseEntity.ok(result);
+    }
+    @GetMapping("/reviewlist")
+    public ResponseEntity<List<ReviewDto>> reviewList(@RequestParam Long tno) {
+        List<ReviewDto> list = reviewService.reviewList(tno);
+        return ResponseEntity.ok(list);
     }
 }

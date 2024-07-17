@@ -46,4 +46,18 @@ public class ReviewDto {
                 .image(image)
                 .build();
     }
+    public static ReviewDto of1 (Review review,List<ImageDto>image) {
+        return ReviewDto.builder()
+                .rno(review.getRno())
+                .title(review.getTitle())
+                .tno(review.getTravel().getTno().intValue())
+                .tname(review.getTravel().getTname())
+                .tcategory(review.getTravel().getTcategory())
+                .rcontent(review.getRcontent())
+                .rdate(review.getRdate())
+                .rate(review.getRate())
+                .rnick(review.getRnick().getNick())
+                .image(image)
+                .build();
+    }
 }

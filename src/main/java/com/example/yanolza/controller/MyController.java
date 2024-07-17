@@ -65,4 +65,8 @@ public class MyController {
         List<ReviewDto> result = reviewService.myReviewList();
         return ResponseEntity.ok(result);
     }
+    @GetMapping("withdraw")
+    public ResponseEntity<Boolean> withdraw () {
+        return ResponseEntity.ok(memberService.withdraw());
+    }
 }

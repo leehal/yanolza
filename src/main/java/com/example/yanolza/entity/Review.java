@@ -34,4 +34,9 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "nick")
     private Member rnick;
+
+    @PreRemove
+    private void preRemoveReview() {
+        this.rnick = null;
+    }
 }
