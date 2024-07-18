@@ -30,6 +30,8 @@ public class PartyService {
     private final ChattingRepository chattingRepository;
     private final ChatService chatService;
 
+
+
     //    party save
     public boolean partyInsert(PartyRequestDto reqDto) {
         boolean isTrue = false;
@@ -47,7 +49,9 @@ public class PartyService {
 
         chatService.createRoom(party);
 
-        Optional<Party> partyPname = partyRepository.findByPname(pname1);
+        Long pno =  party.getPno();
+
+        Optional<Party> partyPname = partyRepository.findById(pno);
         if (partyPname.isPresent()) {
             for (String s : nickName) {
                 Optional<Member> member = memberRepository.findByNick(s);
