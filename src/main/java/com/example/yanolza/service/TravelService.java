@@ -130,4 +130,8 @@ public class TravelService {
     public TravelDto travel(Long tno) {
         return TravelDto.of(travelRepository.findById(tno).get());
     }
+
+
+
+
 }
